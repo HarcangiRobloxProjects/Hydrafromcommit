@@ -6,6 +6,7 @@ namespace HydraMenu.features
 {
 	internal class Protections
 	{
+		public static bool BlockInvalidVentOverload { get; set; } = true;
 		public static bool BlockInvalidLadderOverload { get; set; } = true;
 
 		[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SetEndpoint))]
@@ -101,20 +102,55 @@ namespace HydraMenu.features
 		[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleRpc))]
 		public static class OnPlayerPhysicsRpc
 		{
-			static bool Prefix(PlayerPhysics __instance, byte callId, MessageReader reader)
+			static bool Prefix(byte callId, MessageReader reader)
 			{
-				if((RpcCalls)callId != RpcCalls.ClimbLadder) return true;
 				int oldReadPosition = reader.Position;
+				RpcCalls rpcId = (RpcCalls)callId;
 
-				int ladderId = reader.ReadPackedInt32();
-				if(BlockInvalidLadderOverload && (!ShipStatus.Instance || ladderId > ShipStatus.Instance.Ladders.Length - 1))
+				switch(rpcId)
 				{
-					return false;
+					case RpcCalls.EnterVent:
+					case RpcCalls.ExitVent:
+					case RpcCalls.BootFromVent:
+						int ventId = reader.ReadPackedInt32();
+
+						if(BlockInvalidVentOverload && !IsValidVentId(ventId))
+						{
+							return false;
+						}
+						break;
+
+					case RpcCalls.ClimbLadder:
+						byte ladderId = reader.ReadByte();
+
+						if(BlockInvalidLadderOverload && (!ShipStatus.Instance || ladderId > ShipStatus.Instance.Ladders.Length - 1))
+						{
+							return false;
+						}
+						break;
 				}
 
 				reader.Position = oldReadPosition;
 				return true;
 			}
+		}
+
+		private static bool IsValidVentId(int ventId)
+		{
+			if(ShipStatus.Instance == null) return false;
+
+			MapNames map = Utilities.GetCurrentMap();
+			// On Mira, there is no vent with ID 0 for whatever reason
+			if(map == MapNames.MiraHQ && (ventId == 0 || ShipStatus.Instance.AllVents.Length > ventId))
+			{
+				return false;
+			}
+			else if(map != MapNames.MiraHQ && ShipStatus.Instance.AllVents.Length - 1 > ventId)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		[HarmonyPatch(typeof(VoteBanSystem), nameof(VoteBanSystem.AddVote))]
