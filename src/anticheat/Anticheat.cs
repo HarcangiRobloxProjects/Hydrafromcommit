@@ -14,6 +14,7 @@ namespace HydraMenu.anticheat
 			// RPC handlers in this dictionary should be sorted by their RPC ID
 			{ RpcCalls.PlayAnimation, new PlayAnimation() },
 			{ RpcCalls.CompleteTask, new CompleteTask() },
+			{ RpcCalls.Exiled, new Exiled() },
 			{ RpcCalls.CheckName, new CheckName() },
 			{ RpcCalls.SetScanner, new SetScanner() },
 			{ RpcCalls.SetStartCounter, new SetStartCounter() },
