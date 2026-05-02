@@ -11,14 +11,16 @@ namespace HydraMenu.anticheat.rpc
 		{
 			string requestedName = reader.ReadString();
 
+			/*
 			ClientData clientData = AmongUsClient.Instance.GetClient(player.OwnerId);
 			if(AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && requestedName != clientData.PlayerName)
 			{
 				player.SetName(clientData.PlayerName);
 				blockRpc = true;
 
-				Anticheat.Flag(player, $"{player.Data.PlayerName} requested a name that does not match their name in the login handshake.");
+				Anticheat.Flag(player, $"{clientData.PlayerName} requested a name that does not match their name in the login handshake.");
 			}
+			*/
 
 			if(requestedName.Length > MAX_NAME_LENGTH)
 			{
