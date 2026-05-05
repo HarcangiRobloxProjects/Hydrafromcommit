@@ -105,7 +105,7 @@ namespace HydraMenu.anticheat
 
 			rpcCheck.Validate(player, reader, ref blockRpc);
 
-			if(DiscardRPC && !blockRpc)
+			if(!DiscardRPC || !blockRpc)
 			{
 				// Put the read position back to its previous spot to not mess up the HandleRpc function
 				reader.Position = oldReadPosition;
