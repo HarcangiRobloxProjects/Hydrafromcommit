@@ -121,8 +121,14 @@ namespace HydraMenu.anticheat
 		{
 			Hydra.notifications.Send("Anticheat", reason, NotificationDuration);
 
-			if(!AmongUsClient.Instance.AmHost || !shouldPunish) return;
+			if(AmongUsClient.Instance.AmHost && shouldPunish)
+			{
+				Punish(player);
+			}
+		}
 
+		private static void Punish(PlayerControl player)
+		{
 			switch(punishment)
 			{
 				case Punishments.None:
@@ -143,7 +149,7 @@ namespace HydraMenu.anticheat
 						// If the ten second timer is reached without a ClientReady game message being received by the host, the host will kick the player due to timeout
 						// The kick message shown to the player will explain that the player has a poor internet connection or that their device is too old
 						// and in-game, players will be shown that the player left due to an error instead of being kicked
-						// Any other disconnection messages other than ClientTimeout will result in the vanilla anticheat banning us from the lobby
+						// Any other disconnection messages other than ClientTimeout will result in the vanilla anticheat kicking us from the lobby
 						AmongUsClient.Instance.SendLateRejection(player.OwnerId, DisconnectReasons.ClientTimeout);
 					}
 					break;

@@ -11,6 +11,7 @@ namespace HydraMenu.anticheat.rpc
 			// On modded lobbies, it is common for players to have custom names
 			if(Constants.IsVersionModded()) return;
 
+			reader.ReadUInt32();
 			string requestedName = reader.ReadString();
 
 			if(requestedName.Length > MAX_NAME_LENGTH)
