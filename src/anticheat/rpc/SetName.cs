@@ -4,7 +4,8 @@ namespace HydraMenu.anticheat.rpc
 {
 	internal class SetName : RpcCheck
 	{
-		public readonly int MAX_NAME_LENGTH = 10;
+		// We increase the max name length to 12 instead of 10 as we need to account for the numbers at the end of player names when there are multiple players with the same name
+		public readonly int MAX_NAME_LENGTH = 12;
 
 		public override void Validate(PlayerControl player, MessageReader reader, ref bool blockRpc)
 		{
