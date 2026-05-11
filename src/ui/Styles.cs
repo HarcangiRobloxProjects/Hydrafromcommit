@@ -42,8 +42,8 @@ namespace HydraMenu.ui
 				style.normal.background = background;
 
 				style.normal.textColor = Color.white;
-				style.alignment = TextAnchor.MiddleCenter;
-				style.padding.top = 2;
+				style.alignment = TextAnchor.UpperCenter;
+				style.padding.top = 5;
 				// The product of the font size and the UI scale will result in a float value with decimal values
 				// which would get truncuated if we cast this into an int
 				// however this is rather insignificant as the font size would be at most one unit off

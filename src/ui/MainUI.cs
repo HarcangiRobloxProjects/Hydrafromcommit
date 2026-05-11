@@ -91,18 +91,10 @@ namespace HydraMenu.ui
 			// https://docs.unity3d.com/6000.3/Documentation/Manual/GUIScriptingGuide.html
 			if(!visible) return;
 
-			GUIStyle mainBox = Styles.MainBox;
-
 			GUI.skin.label.fontSize = (int)(13 * scale);
 
-			// Render UI header
-			GUI.Box(new Rect(windowPosition.x, windowPosition.y, HeaderSize.x, HeaderSize.y), $"{MyPluginInfo.PLUGIN_NAME} - {MyPluginInfo.PLUGIN_VERSION}", mainBox);
-
-			// Render Features Pane
-			GUI.Box(new Rect(FeaturePanePosition.x, FeaturePanePosition.y, FeaturePaneSize.x, FeaturePaneSize.y), "", mainBox);
-
-			// Render Section List
-			GUI.Box(new Rect(SectionListPosition.x, SectionListPosition.y, SectionListSize.x, SectionListSize.y), "", mainBox);
+			// Render UI box
+			GUI.Box(new Rect(windowPosition.x, windowPosition.y, WindowSize.x, WindowSize.y), $"{MyPluginInfo.PLUGIN_NAME} - {MyPluginInfo.PLUGIN_VERSION}", Styles.MainBox);
 
 			for(byte i = 0; i < sections.Length; i++)
 			{
