@@ -202,5 +202,18 @@ namespace HydraMenu.features
 				Hydra.Log.LogInfo($"Assigned ourself the {assignedRole} role!");
 			}
 		}
+
+		[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
+		public static class NoKillCooldown
+		{
+			public static bool Enabled { get; set; } = false;
+
+			static void Prefix(PlayerControl __instance, ref float time)
+			{
+				if(!Enabled || __instance != PlayerControl.LocalPlayer) return;
+
+				time = 0;
+			}
+		}
 	}
 }
