@@ -24,7 +24,7 @@ namespace HydraMenu.features
 
 			static bool Prefix(CustomNetworkTransform __instance, byte callId)
 			{
-				if(!Enabled || callId != (byte)RpcCalls.SnapTo || __instance.myPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId) return true;
+				if(!Enabled || callId != (byte)RpcCalls.SnapTo || __instance.myPlayer != PlayerControl.LocalPlayer) return true;
 
 				Hydra.Log.LogMessage($"Recived SnapTo RPC for our player, since block server teleports is enabled we will disregard the RPC");
 				return false;

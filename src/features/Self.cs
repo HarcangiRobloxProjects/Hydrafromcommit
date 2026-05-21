@@ -29,7 +29,7 @@ namespace HydraMenu.features
 		{
 			static bool Prefix(PlayerControl __instance, bool value)
 			{
-				if(__instance.PlayerId != PlayerControl.LocalPlayer.PlayerId) return true;
+				if(__instance != PlayerControl.LocalPlayer) return true;
 
 				if(AlwaysShowTaskAnimations)
 				{
@@ -48,7 +48,7 @@ namespace HydraMenu.features
 		{
 			static bool Prefix(PlayerControl __instance, byte animType)
 			{
-				if(__instance.PlayerId != PlayerControl.LocalPlayer.PlayerId) return true;
+				if(__instance != PlayerControl.LocalPlayer) return true;
 
 				if(AlwaysShowTaskAnimations)
 				{

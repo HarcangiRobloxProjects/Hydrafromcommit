@@ -70,7 +70,7 @@ namespace HydraMenu.routines
 
 		public bool AmAttachedTo(PlayerControl player)
 		{
-			return following != null && player.PlayerId == following.PlayerId;
+			return player == following;
 		}
 
 		private void Disable()
