@@ -6,7 +6,7 @@ namespace HydraMenu.routines
 	{
 		public DoorTrollerRoutine()
 		{
-			RoutineName = "DoorTroller";
+			name = "DoorTroller";
 		}
 
 		public float lockAndUnlockDelay = 0.5f;

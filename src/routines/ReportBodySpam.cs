@@ -6,7 +6,7 @@ namespace HydraMenu.routines
 	{
 		public ReportBodySpam()
 		{
-			RoutineName = "ReportBodySpam";
+			name = "ReportBodySpam";
 		}
 
 		public float reportDelay = 2.5f;
