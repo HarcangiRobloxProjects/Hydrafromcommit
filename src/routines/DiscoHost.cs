@@ -35,7 +35,7 @@ namespace HydraMenu.routines
 				return;
 			}
 
-			if(!AmongUsClient.Instance.AmHost && Utilities.IsAnticheatPresent())
+			if(Utilities.IsAnticheatPresent() && !AmongUsClient.Instance.AmHost)
 			{
 				Hydra.notifications.Send("Disco Party", "Disco Party can only be used if you are the host of the lobby.", 10);
 				Enabled = false;

@@ -63,15 +63,17 @@ namespace HydraMenu
 		{
 			NetworkedPlayerInfo.PlayerOutfit outfit = player.CurrentOutfit;
 
-			if(AmongUsClient.Instance.AmHost)
+			bool hasAnticheat = IsAnticheatPresent();
+
+			// We cannot change the name of our player in server-authoritative lobbies, even as the host
+			if(!hasAnticheat)
 			{
-				// Changing names, even when host, is not possible on Vanilla servers
 				PlayerControl.LocalPlayer.RpcSetName(outfit.PlayerName);
-				PlayerControl.LocalPlayer.RpcSetColor((byte)outfit.ColorId);
 			}
-			else
+
+			if(!hasAnticheat || AmongUsClient.Instance.AmHost)
 			{
-				PlayerControl.LocalPlayer.CmdCheckColor((byte)outfit.ColorId);
+				PlayerControl.LocalPlayer.RpcSetColor((byte)outfit.ColorId);
 			}
 
 			PlayerControl.LocalPlayer.RpcSetNamePlate(outfit.NamePlateId);
