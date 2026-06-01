@@ -421,6 +421,12 @@ namespace HydraMenu.ui.sections
 		{
 			bool hasAnticheat = Utilities.IsAnticheatPresent();
 
+			if(hasAnticheat && !AmongUsClient.Instance.AmHost)
+			{
+				Hydra.notifications.Send("Framer", "You must be the host of the lobby in order to use this feature.");
+				return;
+			}
+
 			if(hasAnticheat && ShipStatus.Instance == null)
 			{
 				Hydra.notifications.Send("Framer", "The game must have started for this option to work.");
