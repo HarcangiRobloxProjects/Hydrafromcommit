@@ -58,8 +58,7 @@ namespace HydraMenu.ui.sections
 			{
 				if(GUILayout.Button(key))
 				{
-					Sabotage.SabotageSystem(value);
-					Hydra.notifications.Send("Sabotage", $"{key} has been sabotaged.", 5);
+					HandleSabotage(value);
 				}
 			}
 
@@ -95,6 +94,22 @@ namespace HydraMenu.ui.sections
 			if(i % 2 != 0)
 			{
 				GUILayout.EndHorizontal();
+			}
+		}
+
+		private void HandleSabotage(SystemTypes system)
+		{
+			Event currentEvent = Event.current;
+
+			if(currentEvent.button == 0)
+			{
+				Sabotage.SabotageSystem(system);
+				Hydra.notifications.Send("Sabotage", $"{system} has been sabotaged.", 5);
+			}
+			else if(currentEvent.button == 1)
+			{
+				Sabotage.FixSabotage(system);
+				Hydra.notifications.Send("Sabotage", $"{system} has been fixed,", 5);
 			}
 		}
 	}
