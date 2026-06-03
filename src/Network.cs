@@ -38,7 +38,7 @@ namespace HydraMenu
 			MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(
 				PlayerControl.LocalPlayer.NetId,
 				(byte)RpcCalls.PlayAnimation,
-				SendOption.Reliable,
+				SendOption.None,
 				-1
 			);
 
