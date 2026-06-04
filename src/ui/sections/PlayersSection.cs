@@ -308,7 +308,7 @@ namespace HydraMenu.ui.sections
 
 			GUILayout.Space(5);
 			GUILayout.Label($"Change color to: {selectedColor}");
-			selectedColor = Controls.HorizontalColorSlider(currentColor);
+			selectedColor = Controls.HorizontalColorSlider(selectedColor);
 
 			if(GUILayout.Button("Set Color"))
 			{
