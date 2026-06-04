@@ -43,7 +43,7 @@ namespace HydraMenu.ui.sections
 		public static PlayerControl selectedPlayer;
 		private Vector2 subsectionScrollVector;
 
-		private static CrewmateColor selectedColor = CrewmateColor.Red;
+		private static Controls.PlayerColors selectedColor = Controls.PlayerColors.Red;
 
 		public override void Render()
 		{
@@ -308,7 +308,7 @@ namespace HydraMenu.ui.sections
 
 			GUILayout.Space(5);
 			GUILayout.Label($"Change color to: {selectedColor}");
-			selectedColor = (CrewmateColor)GUILayout.HorizontalSlider((float)selectedColor, 0, 17);
+			selectedColor = Controls.HorizontalColorSlider(currentColor);
 
 			if(GUILayout.Button("Set Color"))
 			{

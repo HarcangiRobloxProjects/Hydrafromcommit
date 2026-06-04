@@ -27,6 +27,29 @@ namespace HydraMenu.ui
 			RoleTypes.ImpostorGhost
 		};
 
+		public enum PlayerColors
+		{
+			Red,
+			Blue,
+			Green,
+			Pink,
+			Orange,
+			Yellow,
+			Black,
+			White,
+			Purple,
+			Brown,
+			Cyan,
+			Lime,
+			Maroon,
+			Rose,
+			Banana,
+			Gray,
+			Tan,
+			Coral,
+			Fortegreen
+		}
+
 
 		public static RoleTypes HorizontalRoleSlider(RoleTypes currentRole)
 		{
@@ -36,6 +59,12 @@ namespace HydraMenu.ui
 
 			return RolesList[newValue];
 		}
+
+		public static PlayerColors HorizontalColorSlider(PlayerColors currentColor)
+		{
+			return (PlayerColors)GUILayout.HorizontalSlider((int)currentColor, 0, Palette.ColorNames.Length);
+		}
+
 
 		public static PlayerControl PlayerSpecificToggle(string label, PlayerControl selectedPlayer, PlayerControl currentPlayer)
 		{
