@@ -114,6 +114,11 @@ namespace HydraMenu.anticheat
 
 		public static void Flag(PlayerControl player, string reason, bool shouldPunish = true)
 		{
+			// Sanity check, make sure that we are not flagging ourselves
+			// On servers without net object impersonation checks, it may be possible to send an invalid RPC on the behalf of the host
+			// which would result in Hydra Anticheat flagging ourselves and banning us from our own lobby
+			if(player == PlayerControl.LocalPlayer) return;
+
 			if(sendNotification)
 			{
 				Hydra.notifications.Send("Anticheat", reason, NotificationDuration);
