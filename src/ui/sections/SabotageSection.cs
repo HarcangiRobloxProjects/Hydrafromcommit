@@ -69,32 +69,7 @@ namespace HydraMenu.ui.sections
 				return;
 			}
 
-			byte i = 0;
-			foreach(var (key, value) in doors)
-			{
-				if(i % 2 == 0)
-				{
-					GUILayout.BeginHorizontal();
-				}
-
-				if(GUILayout.Button(key))
-				{
-					Sabotage.LockDoor(value);
-				}
-
-				if(i % 2 != 0)
-				{
-					GUILayout.EndHorizontal();
-				}
-
-				i++;
-			}
-
-			// If the amount of door sabotages is an odd number then we won't be ending the horizontal layout, so we check if we need to end it here
-			if(i % 2 != 0)
-			{
-				GUILayout.EndHorizontal();
-			}
+			Controls.DrawButtonCell(doors, 2, HandleCloseDoor);
 		}
 
 		private void HandleSabotage(SystemTypes system)
@@ -111,6 +86,11 @@ namespace HydraMenu.ui.sections
 				Sabotage.FixSabotage(system);
 				Hydra.notifications.Send("Sabotage", $"{system} has been fixed,", 5);
 			}
+		}
+
+		private void HandleCloseDoor(SystemTypes door)
+		{
+			Sabotage.LockDoor(door);
 		}
 	}
 }

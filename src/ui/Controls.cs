@@ -1,4 +1,5 @@
 ﻿using AmongUs.GameOptions;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -95,6 +96,38 @@ namespace HydraMenu.ui
 		{
 			string colorName = Utilities.GetPlayerColor(player);
 			GUI.Box(rect, "", Styles.CreateCrewmateColorBox(colorName, colorName != "Fortegreen" ? player.Color : Color.black));
+		}
+
+		public static void DrawButtonCell<TKey,TValue>(Dictionary<TKey,TValue> buttons, int columnsPerRow, Action<TValue> action)
+		{
+			int currentColumn = 0;
+
+			foreach(var (key, value) in buttons)
+			{
+				if(currentColumn == 0)
+				{
+					GUILayout.BeginHorizontal();
+				}
+
+				if(GUILayout.Button(key.ToString()))
+				{
+					action(value);
+				}
+
+				currentColumn++;
+				if(currentColumn == columnsPerRow)
+				{
+					GUILayout.EndHorizontal();
+					currentColumn = 0;
+				}
+			}
+
+			// If the amount of teleport locations does not divide into the amount of colums per row then we won't be ending the horizontal layout
+			// so we check if we need to end it here
+			if(currentColumn != 0)
+			{
+				GUILayout.EndHorizontal();
+			}
 		}
 	}
 }

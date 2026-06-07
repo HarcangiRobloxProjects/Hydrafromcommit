@@ -34,33 +34,12 @@ namespace HydraMenu.ui.sections
 			GUILayout.Label("Teleport To Location:");
 
 			Dictionary<string, Vector2> teleportLocations = Teleporter.GetTeleportLocations();
+			Controls.DrawButtonCell(teleportLocations, 2, HandleTeleport);
+		}
 
-			byte i = 0;
-			foreach(var (key, value) in teleportLocations)
-			{
-				if(i % 2 == 0)
-				{
-					GUILayout.BeginHorizontal();
-				}
-
-				if(GUILayout.Button(key))
-				{
-					Teleporter.TeleportTo(value);
-				}
-
-				if(i % 2 != 0)
-				{
-					GUILayout.EndHorizontal();
-				}
-
-				i++;
-			}
-
-			// If the amount of teleport locations is an odd number then we won't be ending the horizontal layout, so we check if we need to end it here
-			if(i % 2 != 0)
-			{
-				GUILayout.EndHorizontal();
-			}
+		private void HandleTeleport(Vector2 location)
+		{
+			Teleporter.TeleportTo(location);
 		}
 	}
 }
