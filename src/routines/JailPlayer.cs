@@ -1,9 +1,4 @@
-﻿
-
-using Hazel;
-using HydraMenu.features;
-using InnerNet;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HydraMenu.routines
 {

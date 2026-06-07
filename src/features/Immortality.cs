@@ -71,8 +71,8 @@ namespace HydraMenu.features
 			}
 		}
 
-		[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.OnEnable))]
-		class OnShipStatusCreate
+		[HarmonyPatch(typeof(GameManager), nameof(GameManager.StartGame))]
+		class OnGameStart
 		{
 			static void Postfix()
 			{
