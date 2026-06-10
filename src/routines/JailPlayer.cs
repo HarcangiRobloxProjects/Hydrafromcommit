@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace HydraMenu.routines
 {
@@ -8,7 +9,7 @@ namespace HydraMenu.routines
 	{
 		public JailPlayerRoutine() : base("JailPlayer") { }
 
-		public PlayerControl target;
+		public HashSet<uint> targets = new HashSet<uint>();
 
 		// For the sake of performance, only check if players are outside of the jail every 500ms
 		public float delay = 0.5f;
@@ -20,18 +21,17 @@ namespace HydraMenu.routines
 			if(timeElapsed < delay) return;
 			timeElapsed = 0f;
 
-			if(target == null)
-			{
-				Enabled = false;
-				return;
-			}
-
 			GetMapData(out SystemTypes jailRoom, out int ventId);
 
-			SystemTypes room = GetRoomForPlayer(target);
-			if(room != jailRoom)
+			foreach(PlayerControl player in PlayerControl.AllPlayerControls)
 			{
-				target.MyPhysics.RpcBootFromVent(ventId);
+				if(!targets.Contains(player.NetId)) continue;
+
+				SystemTypes room = GetRoomForPlayer(player);
+				if(room != jailRoom)
+				{
+					player.MyPhysics.RpcBootFromVent(ventId);
+				}
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace HydraMenu.routines
 
 		public override void OnDisable()
 		{
-			target = null;
+			targets.Clear();
 		}
 
 		public override void OnDisconnect()

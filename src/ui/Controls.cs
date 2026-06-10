@@ -92,6 +92,47 @@ namespace HydraMenu.ui
 			return currentPlayer != null;
 		}
 
+		// It may seem like it would make more sense for the currentPlayers hashset to be a set of PlayerControls and not uint
+		// My original implementation did exactly that, however I noticed that after some time has elapsed, the UI would show that the player is no longer jailed, but yet the jail routine would still teleport them
+		// I did some debugging and noticed that when this happens, the hashset does not loses any items, and it is possible for the set to include mulitple copies of a player's PlayerControl
+		// A hashset, by its nature, should be a deduplicated, but yet the same PlayerControl could appear multiple times in the set
+		// HashSet::Contains would return false until the player was added to the set again
+		// It seems incredibily peculiar, but it would appear that a player's reference to PlayerControl can change throughout time, and stale references of a player's previous PlayerControls will still exist in memory
+		// until cleared out by the garbage collector
+		// What is even more weirder is that storing a player's reference to PlayerControl in a variable does not exhibit this behavior,
+		// comparing a stored reference of a player's PlayerControl and comparing it with a player's PlayerControl will return true
+		// Instead of storing references to PlayerControl in the hashset, we can just store the player's net id
+		// We also cannot use the player's owner ID, as on Freeplay all PlayerControls are owned by -2
+		public static bool PlayerSpecificToggle(string label, PlayerControl selectedPlayer, ref HashSet<uint> currentPlayers)
+		{
+			GUIStyle toggle = new GUIStyle(GUI.skin.toggle);
+			bool isSelected = selectedPlayer != null && currentPlayers.Contains(selectedPlayer.NetId);
+
+			if(isSelected)
+			{
+				toggle.normal = toggle.onNormal;
+				toggle.active = toggle.onActive;
+				toggle.hover = toggle.onHover;
+			}
+
+			// The GUILayout::Toggle function always returns the current state of the toggle
+			// It is possible to determine when the toggle is changed, however it requires messy hacks involving getters and setters
+			// Using a GUILayout.Button disguised as a toggle that triggers only when the button is pressed is more pratical here
+			if(GUILayout.Button(label, toggle))
+			{
+				if(!isSelected)
+				{
+					currentPlayers.Add(selectedPlayer.NetId);
+				}
+				else
+				{
+					currentPlayers.Remove(selectedPlayer.NetId);
+				}
+			}
+
+			return currentPlayers.Count != 0;
+		}
+
 		public static void DrawCrewmateColorBox(Rect rect, NetworkedPlayerInfo player)
 		{
 			string colorName = Utilities.GetPlayerColor(player);
