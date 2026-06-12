@@ -76,6 +76,18 @@ namespace HydraMenu.ui.sections
 
 		private void HandleSabotage(SystemTypes system)
 		{
+			if(PlayerControl.LocalPlayer == null)
+			{
+				Hydra.notifications.Send("Sabotage", "This option can only be used in a game.");
+				return;
+			}
+
+			if(ShipStatus.Instance == null)
+			{
+				Hydra.notifications.Send("Sabotage", "There must be an instance of ShipStatus for this feature to work.");
+				return;
+			}
+
 			Event currentEvent = Event.current;
 
 			if(currentEvent.button == 0)
@@ -92,6 +104,18 @@ namespace HydraMenu.ui.sections
 
 		private void HandleCloseDoor(SystemTypes door)
 		{
+			if(PlayerControl.LocalPlayer == null)
+			{
+				Hydra.notifications.Send("Sabotage", "This option can only be used in a game.");
+				return;
+			}
+
+			if(ShipStatus.Instance == null)
+			{
+				Hydra.notifications.Send("Sabotage", "There must be an instance of ShipStatus for this feature to work.");
+				return;
+			}
+
 			Event currentEvent = Event.current;
 
 			if(currentEvent.button == 0)
