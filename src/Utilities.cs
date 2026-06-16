@@ -1,5 +1,6 @@
 ﻿using AmongUs.GameOptions;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace HydraMenu
@@ -12,13 +13,34 @@ namespace HydraMenu
 		private static readonly Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<PetData> allPets = HatManager.Instance.allPets;
 		private static readonly Il2CppInterop.Runtime.InteropTypes.Arrays.Il2CppReferenceArray<NamePlateData> allNameplates = HatManager.Instance.allNamePlates;
 
+		public static int GetRandomUnusedColor()
+		{
+			List<int> colors = Enumerable.Range(0, 18).ToList();
+
+			foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+			{
+				colors.Remove(player.Data.DefaultOutfit.ColorId);
+			}
+
+			System.Random rnd = new System.Random();
+
+			// Some modded lobbies may have more than 18 players, which means there wont be enough unique colors for everyone
+			// so we should take that edge case into account
+			if(colors.Count == 0)
+			{
+				return rnd.Next(0, 18);
+			}
+
+			return colors[rnd.Next(0, colors.Count)];
+		}
+
 		public static void RandomizePlayer(bool ingame = false)
 		{
 			System.Random rnd = new System.Random();
 
 			if(ingame)
 			{
-				PlayerControl.LocalPlayer.CmdCheckColor((byte)rnd.Next(0, 18));
+				PlayerControl.LocalPlayer.CmdCheckColor((byte)GetRandomUnusedColor());
 
 				PlayerControl.LocalPlayer.RpcSetHat(allHats[rnd.Next(0, allHats.Length)].ProductId);
 				PlayerControl.LocalPlayer.RpcSetVisor(allVisors[rnd.Next(0, allVisors.Length)].ProductId);
@@ -27,13 +49,13 @@ namespace HydraMenu
 			}
 			else
 			{
-				PlayerCustomization.EquipSkin(allSkins[rnd.Next(0, allSkins.Length)]);
+				AccountManager.Instance.RandomizeName();
+
 				PlayerCustomization.EquipHat(allHats[rnd.Next(0, allHats.Length)]);
 				PlayerCustomization.EquipVisor(allVisors[rnd.Next(0, allVisors.Length)]);
+				PlayerCustomization.EquipSkin(allSkins[rnd.Next(0, allSkins.Length)]);
 				PlayerCustomization.EquipPet(allPets[rnd.Next(0, allPets.Length)]);
 				PlayerCustomization.EquipNameplate(allNameplates[rnd.Next(0, allNameplates.Length)]);
-
-				AccountManager.Instance.RandomizeName();
 			}
 		}
 
@@ -92,7 +114,7 @@ namespace HydraMenu
 
 			if(hasAnticheat && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
 			{
-				Hydra.notifications.Send("Start Meeting", "The game must have started for in order for this feature to work.");
+				Hydra.notifications.Send("Start Meeting", "The game must have started in order for this feature to work.");
 				return;
 			}
 

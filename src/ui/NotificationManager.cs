@@ -82,7 +82,7 @@ namespace HydraMenu.ui
 
 		public int GetMaxNotifications()
 		{
-			return (Screen.height / 2) / (int)BoxSize.y;
+			return Screen.height / 2 / (int)BoxSize.y;
 		}
 
 		// The time to live value for a notification should be five seconds if it is a success message, and ten seconds if it is a failure message

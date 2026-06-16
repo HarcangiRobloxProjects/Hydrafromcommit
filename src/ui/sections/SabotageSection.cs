@@ -68,10 +68,11 @@ namespace HydraMenu.ui.sections
 			if(doors.Count == 0)
 			{
 				GUILayout.Label("This map has no doors that can be closed.");
-				return;
 			}
-
-			Controls.DrawButtonCell(doors, HandleCloseDoor, 2);
+			else
+			{
+				Controls.DrawButtonCell(doors, HandleCloseDoor, 2);
+			}
 		}
 
 		private void HandleSabotage(SystemTypes system)
@@ -123,7 +124,6 @@ namespace HydraMenu.ui.sections
 				Sabotage.LockDoor(door);
 				return;
 			}
-
 
 			if(!Sabotage.CanUnlockDoors())
 			{

@@ -41,21 +41,6 @@ namespace HydraMenu.ui.sections
 				PlayerControl.LocalPlayer.StartCoroutine(CompleteAllTasks().WrapToIl2Cpp());
 			}
 
-			if(GUILayout.Button("Randomize Avatar"))
-			{
-				if(AmongUsClient.Instance.AmConnected)
-				{
-					Utilities.RandomizePlayer(true);
-
-					Hydra.notifications.Send("Player Randomizer", "Your avatar has been randomized for this game.", 5);
-				} else
-				{
-					Utilities.RandomizePlayer();
-
-					Hydra.notifications.Send("Player Randomizer", "Your name and avatar has been randomized.", 5);
-				}
-			}
-
 			GUILayout.Label("Task Animations:");
 			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Start Medbay Scan"))
@@ -71,6 +56,29 @@ namespace HydraMenu.ui.sections
 
 			Dictionary<string, TaskTypes> animations = MapAssets.GetAnimations();
 			Controls.DrawButtonCell(animations, PlayAnimation, 2);
+
+			GUILayout.Space(5);
+			GUILayout.Label("Avatar Controls:");
+			if(GUILayout.Button("Randomize Avatar"))
+			{
+				if(AmongUsClient.Instance.AmConnected)
+				{
+					Utilities.RandomizePlayer(true);
+
+					Hydra.notifications.Send("Player Randomizer", "Your avatar has been randomized for this game.", 5);
+				}
+				else
+				{
+					Utilities.RandomizePlayer();
+
+					Hydra.notifications.Send("Player Randomizer", "Your name and avatar has been randomized.", 5);
+				}
+			}
+
+			if(GUILayout.Button("Randomize Color"))
+			{
+				PlayerControl.LocalPlayer.CmdCheckColor((byte)Utilities.GetRandomUnusedColor());
+			}
 
 			GUILayout.Space(5);
 			GUILayout.Label($"Update level to: {level + 1}");

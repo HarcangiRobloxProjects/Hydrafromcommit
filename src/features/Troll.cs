@@ -23,7 +23,7 @@ namespace HydraMenu.features
 
 				if(PlayerControl.LocalPlayer.Data.IsDead) return;
 
-				Hydra.notifications.Send("Auto Report Bodies", $"{target.Data.PlayerName} was killed by {__instance.Data.PlayerName} {Utilities.GetPlayerColor(__instance.Data)}, their body has been automatically reported.");
+				Hydra.notifications.Send("Auto Report Bodies", $"{target.Data.PlayerName} was killed by {__instance.Data.PlayerName} ({Utilities.GetPlayerColor(__instance.Data)}), their body has been automatically reported.");
 				PlayerControl.LocalPlayer.CmdReportDeadBody(target.Data);
 			}
 		}
