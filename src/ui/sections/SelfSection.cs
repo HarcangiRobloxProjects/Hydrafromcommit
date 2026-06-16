@@ -1,4 +1,5 @@
-﻿using BepInEx.Unity.IL2CPP.Utils.Collections;
+﻿using AmongUs.Data;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HydraMenu.assets;
 using HydraMenu.features;
 using System.Collections;
@@ -78,6 +79,15 @@ namespace HydraMenu.ui.sections
 			if(GUILayout.Button("Randomize Color"))
 			{
 				PlayerControl.LocalPlayer.CmdCheckColor((byte)Utilities.GetRandomUnusedColor());
+			}
+
+			if(GUILayout.Button("Restore Avatar"))
+			{
+				PlayerControl.LocalPlayer.CmdCheckColor(DataManager.Player.Customization.Color);
+				PlayerControl.LocalPlayer.RpcSetHat(DataManager.Player.Customization.Hat);
+				PlayerControl.LocalPlayer.RpcSetVisor(DataManager.Player.Customization.Visor);
+				PlayerControl.LocalPlayer.RpcSetSkin(DataManager.Player.Customization.Skin);
+				PlayerControl.LocalPlayer.RpcSetPet(DataManager.Player.Customization.Pet);
 			}
 
 			GUILayout.Space(5);
