@@ -2,6 +2,7 @@
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HydraMenu.assets;
 using HydraMenu.features;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -94,6 +95,28 @@ namespace HydraMenu.ui.sections
 			GUILayout.Label($"Update level to: {level + 1}");
 			level = (uint)GUILayout.HorizontalSlider(level, 0, 199);
 
+			GUILayout.BeginHorizontal();
+			if(GUILayout.Button("-100"))
+			{
+				ClampSelectedLevel(level - 100);
+			}
+
+			if(GUILayout.Button("-10"))
+			{
+				ClampSelectedLevel(level - 10);
+			}
+
+			if(GUILayout.Button("+10"))
+			{
+				ClampSelectedLevel(level + 10);
+			}
+
+			if(GUILayout.Button("+100"))
+			{
+				ClampSelectedLevel(level + 100);
+			}
+			GUILayout.EndHorizontal();
+
 			if(GUILayout.Button("Send Level Update"))
 			{
 				PlayerControl.LocalPlayer.RpcSetLevel(level);
@@ -101,7 +124,7 @@ namespace HydraMenu.ui.sections
 			}
 		}
 
-		private IEnumerator CompleteAllTasks()
+		public IEnumerator CompleteAllTasks()
 		{
 			Il2CppSystem.Collections.Generic.List<PlayerTask> allTasks = PlayerControl.LocalPlayer.myTasks;
 
@@ -140,6 +163,15 @@ namespace HydraMenu.ui.sections
 			}
 
 			Network.SendPlayAnimation((byte)task);
+		}
+
+		private void ClampSelectedLevel(uint newLevel)
+		{
+			// Do we really need to have an upper bounds on the level value?
+			// I doubt anyone will press the +100 that much anyway
+			uint maxLevel = Utilities.IsAnticheatPresent() ? 100001 : uint.MaxValue - 1;
+
+			level = Math.Clamp(newLevel, 0, maxLevel);
 		}
 	}
 }

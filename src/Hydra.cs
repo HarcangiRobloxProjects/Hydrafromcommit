@@ -8,7 +8,7 @@ using HydraMenu.ui;
 
 namespace HydraMenu;
 
-[BepInPlugin("com.mrd.hydramenu", "Hydra", "1.6.0.0")]
+[BepInPlugin("com.mrd.hydramenu", "Hydra", "1.7.0.0")]
 [BepInProcess("Among Us.exe")]
 internal class Hydra : BasePlugin
 {
