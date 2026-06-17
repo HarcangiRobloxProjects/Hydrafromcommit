@@ -21,6 +21,11 @@ namespace HydraMenu.ui.sections
 			Roles.DisableShapeshiftAnimation = GUILayout.Toggle(Roles.DisableShapeshiftAnimation, "Disable Shapeshift Animation");
 			// Roles.DisablePhantomEndAnimation = GUILayout.Toggle(Roles.DisablePhantomEndAnimation, "Disable Phantom End Animation");
 
+			Roles.AlwaysImp = GUILayout.Toggle(Roles.AlwaysImp, "Always Imposter (non-host)");
+			Roles.KillBypass = GUILayout.Toggle(Roles.KillBypass, "Use Kill Bypass");
+			Host.NoKillCooldown.Enabled = GUILayout.Toggle(Host.NoKillCooldown.Enabled, "No Kill Cooldown");
+			Roles.NoKillChecks = GUILayout.Toggle(Roles.NoKillChecks, "No Kill Checks");
+
 			GUILayout.Label($"Change role to: {selectedRole}");
 			GUILayout.BeginHorizontal();
 			selectedRole = Controls.HorizontalRoleSlider(selectedRole);

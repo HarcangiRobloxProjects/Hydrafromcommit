@@ -15,6 +15,7 @@ namespace HydraMenu.ui.sections
 
 			// Overloads
 			Protections.HardenedReadPackedUInt.Enabled = GUILayout.Toggle(Protections.HardenedReadPackedUInt.Enabled, "Use hardened packed int deserializer");
+			Protections.MemoryAllocationOverload.Enabled = GUILayout.Toggle(Protections.MemoryAllocationOverload.Enabled, "Protect against VotingComplete overloads");
 
 			Protections.BypassShapeshiftRatelimits.Enabled = GUILayout.Toggle(Protections.BypassShapeshiftRatelimits.Enabled, "Bypass ratelimits for Shapeshift RPC");
 			Protections.Votekicks.Enabled = GUILayout.Toggle(Protections.Votekicks.Enabled, "Prevent being votekicked as host");

@@ -1,4 +1,5 @@
 ﻿using AmongUs.GameOptions;
+using HydraMenu.features;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -242,7 +243,7 @@ namespace HydraMenu
 
 		public static bool IsAnticheatPresent()
 		{
-			if(Constants.IsVersionModded() || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null) return false;
+			if(Constants.IsVersionModded() || PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data == null || Self.UseBypassRpc) return false;
 
 			// On freeplay, local, and modded lobbies, NetworkedPlayerInfo net objects are owned by the host (-2)
 			// On vanilla lobbies, NetworkedPlayerInfo net objects are owned by the backend among us servers (-4)

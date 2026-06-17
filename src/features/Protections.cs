@@ -137,5 +137,30 @@ namespace HydraMenu.features
 				GameOptions.SendGameOptionsToClient(options, player.OwnerId);
 			}
 		}
+
+		[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.HandleRpc))]
+		public static class MemoryAllocationOverload
+		{
+			public static bool Enabled { get; set; } = true;
+
+			static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
+			{
+				if(!Enabled || callId != (byte)RpcCalls.VotingComplete) return true;
+
+				int oldReadPosition = reader.Position;
+
+				// The game creates an array with the size of the following value
+				// If this value is very large, then the client will attempt to allocate several gigabytes of memory
+				int arrayLength = reader.ReadPackedInt32();
+
+				if(arrayLength > 1024 || arrayLength > reader.BytesRemaining)
+				{
+					return false;
+				}
+
+				reader.Position = oldReadPosition;
+				return true;
+			}
+		}
 	}
 }

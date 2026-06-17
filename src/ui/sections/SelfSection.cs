@@ -32,6 +32,7 @@ namespace HydraMenu.ui.sections
 			Self.AlwaysShowTaskAnimations = GUILayout.Toggle(Self.AlwaysShowTaskAnimations, "Always Show Task Animations");
 			Self.NoLadderCooldown.Enabled = GUILayout.Toggle(Self.NoLadderCooldown.Enabled, "No Ladder Cooldown");
 			Self.UnlimitedMeetings.enabled = GUILayout.Toggle(Self.UnlimitedMeetings.enabled, "Unlimited Meetings");
+			Self.UseBypassRpc = GUILayout.Toggle(Self.UseBypassRpc, "Bypass RPC");
 
 			if(GUILayout.Button("Call Meeting"))
 			{

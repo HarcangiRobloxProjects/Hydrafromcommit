@@ -168,6 +168,25 @@ namespace HydraMenu.ui.sections
 				Utilities.AttemptStartMeeting(PlayerControl.LocalPlayer, target.Data);
 			}
 
+			if(GUILayout.Button("Revive Player"))
+			{
+				target.Data.IsDead = false;
+				target.Data.RoleType = RoleTypes.Crewmate;
+
+				Network.BatchedMessage batch = new Network.BatchedMessage();
+				batch.UseAnticheatBypass();
+				batch.QueueDataFlag(target.Data);
+				batch.FinishBatch();
+			}
+
+			if(GUILayout.Button("Kick"))
+			{
+				Network.BatchedMessage batch = new Network.BatchedMessage(target.OwnerId);
+				batch.UseAnticheatBypass();
+				batch.QueueCheckName(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data.PlayerName);
+				batch.FinishBatch();
+			}
+
 			GUILayout.Space(5);
 			GUILayout.Label("Host Only Features:" + (AmongUsClient.Instance.AmHost ? "" : "\n(Using these will get you kicked!)"));
 

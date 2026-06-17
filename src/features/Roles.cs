@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using AmongUs.GameOptions;
+using HarmonyLib;
+using InnerNet;
 using UnityEngine;
 
 namespace HydraMenu.features
@@ -108,6 +110,77 @@ namespace HydraMenu.features
 				}
 
 				return true;
+			}
+		}
+
+		public static bool AlwaysImp { get; set; } = false;
+		public static bool KillBypass { get; set; } = false;
+		public static bool NoKillChecks { get; set; } = false;
+
+		[HarmonyPatch(typeof(RoleBehaviour), nameof(RoleBehaviour.IsValidTarget))]
+		class NoNormalKillChecks
+		{
+			static bool Prefix(NetworkedPlayerInfo target, ref bool __result)
+			{
+				if(target == PlayerControl.LocalPlayer.Data) return true;
+
+				if(NoKillChecks)
+				{
+					__result = true;
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
+
+		[HarmonyPatch(typeof(ImpostorRole), nameof(ImpostorRole.IsValidTarget))]
+		class NoImpKillChecks
+		{
+			static bool Prefix(NetworkedPlayerInfo target, ref bool __result)
+			{
+				if(target == PlayerControl.LocalPlayer.Data) return true;
+
+				if(NoKillChecks)
+				{
+					__result = true;
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
+
+		[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckMurder))]
+		class Killbypass
+		{
+			static bool Prefix(PlayerControl __instance, PlayerControl target)
+			{
+				if(!KillBypass) return true;
+
+				Network.BatchedMessage batch = new Network.BatchedMessage();
+				batch.UseAnticheatBypass();
+				batch.QueueMurderPlayer(__instance, target, MurderResultFlags.Succeeded);
+				batch.FinishBatch();
+				return false;
+			}
+		}
+
+		[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendClientReady))]
+		class AlwaysImposter
+		{
+			static void Prefix()
+			{
+				if(!AlwaysImp) return;
+
+				Network.BatchedMessage batch = new Network.BatchedMessage();
+				batch.UseAnticheatBypass();
+				batch.QueueSetRole(PlayerControl.LocalPlayer, RoleTypes.Viper, false);
+				batch.FinishBatch();
 			}
 		}
 	}
