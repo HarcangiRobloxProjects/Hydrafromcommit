@@ -435,7 +435,7 @@ namespace HydraMenu.ui.sections
 				batch.QueueSetVisorStr(player, outfit.VisorId, (byte)(player.Data.DefaultOutfit.VisorSequenceId + 2));
 				batch.QueueSetPetStr(player, outfit.PetId, (byte)(player.Data.DefaultOutfit.PetSequenceId + 2));
 
-				if(currentCount == 5)
+				if(currentCount == 4)
 				{
 					Hydra.Log.LogInfo($"Finishing batch, ended up with {batch.writer.Length} bytes.");
 					batch.FinishBatch();
