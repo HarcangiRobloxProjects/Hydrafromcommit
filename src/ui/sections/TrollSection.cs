@@ -429,7 +429,7 @@ namespace HydraMenu.ui.sections
 				batch.QueueSetName(player, outfit.PlayerName);
 				batch.QueueSetColor(player, (byte)outfit.ColorId);
 				batch.QueueSetLevel(player, target.Data.PlayerLevel);
-				batch.QueueSetNameplate(player, outfit.NamePlateId, (byte)(player.Data.DefaultOutfit.NamePlateSequenceId + 2));
+				batch.QueueSetNameplateStr(player, outfit.NamePlateId, (byte)(player.Data.DefaultOutfit.NamePlateSequenceId + 2));
 				batch.QueueSetHatStr(player, outfit.HatId, (byte)(player.Data.DefaultOutfit.HatSequenceId + 2));
 				batch.QueueSetSkinStr(player, outfit.SkinId, (byte)(player.Data.DefaultOutfit.SkinSequenceId + 2));
 				batch.QueueSetVisorStr(player, outfit.VisorId, (byte)(player.Data.DefaultOutfit.VisorSequenceId + 2));

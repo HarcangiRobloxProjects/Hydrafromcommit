@@ -327,7 +327,7 @@ namespace HydraMenu
 				writer.EndMessage();
 			}
 
-			public void QueueSetNameplate(PlayerControl source, string nameplate, byte seqid)
+			public void QueueSetNameplateStr(PlayerControl source, string nameplate, byte seqid)
 			{
 				source.SetVisor(nameplate, source.Data.DefaultOutfit.ColorId);
 
