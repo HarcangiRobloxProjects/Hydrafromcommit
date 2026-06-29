@@ -107,7 +107,8 @@ namespace HydraMenu.features
 				Hydra.Log.LogInfo($"[VotekickLogger] {srcClient} voted to kick out {clientId}");
 				if(clientId != PlayerControl.LocalPlayer.OwnerId) return true;
 
-				ClientData player = AmongUsClient.Instance.GetClient(srcClient);
+				ClientData player = AmongUsClient.Instance.FindClientById(srcClient);
+				if(player == null) return false;
 
 				Hydra.notifications.Send("Votekick Logger", $"{player.PlayerName} has voted to kick you out.");
 

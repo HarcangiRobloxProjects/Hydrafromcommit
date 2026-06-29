@@ -25,6 +25,7 @@ namespace HydraMenu.anticheat
 			{ RpcCalls.EnterVent, new EnterVent() },
 			{ RpcCalls.ExitVent, new ExitVent() },
 			{ RpcCalls.SnapTo, new SnapTo() },
+			{ RpcCalls.AddVote, new AddVote() },
 			{ RpcCalls.CloseDoorsOfType, new CloseDoorsOfType() },
 			{ RpcCalls.ClimbLadder, new ClimbLadder() },
 			{ RpcCalls.UsePlatform, new UsePlatform() },

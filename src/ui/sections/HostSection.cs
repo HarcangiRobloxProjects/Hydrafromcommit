@@ -179,13 +179,13 @@ namespace HydraMenu.ui.sections
 
 			if(hasAnticheat && AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
 			{
-				Hydra.notifications.Send("Murder Player", "This feature can only be used once the game has started");
+				Hydra.notifications.Send("Murder Player", "This feature can only be used once the game has started.");
 				return;
 			}
 
 			if(hasAnticheat && !AmongUsClient.Instance.AmHost)
 			{
-				Hydra.notifications.Send("Murder Player", "This feature can only be used if you are the host of the lobby");
+				Hydra.notifications.Send("Murder Player", "This feature can only be used if you are the host of the lobby.");
 				return;
 			}
 
