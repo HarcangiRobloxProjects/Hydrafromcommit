@@ -15,6 +15,7 @@ namespace HydraMenu.routines
 
 			timeElapsed += Time.deltaTime;
 			if(timeElapsed < reportDelay) return;
+			timeElapsed = 0f;
 
 			PlayerControl player = Utilities.GetRandomPlayer(false, false, false, false);
 
@@ -25,7 +26,6 @@ namespace HydraMenu.routines
 
 			PlayerControl.LocalPlayer.RpcStartMeeting(player.Data);
 
-			timeElapsed = 0f;
 		}
 
 		public override void OnEnable()

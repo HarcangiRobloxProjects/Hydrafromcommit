@@ -19,7 +19,9 @@ namespace HydraMenu.ui.sections
 			{ "17.1.2", 50647000 },
 			{ "17.2", 50645050 },
 			{ "17.2.1", 50652900 },
-			{ "17.2.2", 50653700 }
+			{ "17.2.2", 50653700 },
+			{ "17.3", 50652400 },
+			{ "17.4", 50656300 }
 		};
 
 		private int versionSelection = 0;
@@ -33,6 +35,8 @@ namespace HydraMenu.ui.sections
 			Spoofer.spoofedVersion = versions.ElementAt(versionSelection).Value;
 
 			Spoofer.useModdedProtocol = GUILayout.Toggle(Spoofer.useModdedProtocol, "Use Modded Protocol");
+
+			GUILayout.Space(5);
 
 			GUILayout.Label($"Spoofed Platform: {Spoofer.spoofedPlatform}");
 			Spoofer.spoofedPlatform = (Platforms)GUILayout.HorizontalSlider((float)Spoofer.spoofedPlatform, 0, 10);

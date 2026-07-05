@@ -144,7 +144,7 @@ namespace HydraMenu.features
 		{
 			public static bool Enabled { get; set; } = true;
 
-			static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
+			static bool Prefix(byte callId, MessageReader reader)
 			{
 				if(!Enabled || callId != (byte)RpcCalls.VotingComplete) return true;
 
