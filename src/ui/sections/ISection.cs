@@ -12,6 +12,8 @@ namespace HydraMenu.ui.sections
 			this.name = name;
 		}
 
+		public virtual void HandleSubsectionMove(int offset) { }
+
 		public abstract void Render();
 	}
 }

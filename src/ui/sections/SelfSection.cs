@@ -2,7 +2,6 @@
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HydraMenu.assets;
 using HydraMenu.features;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +11,6 @@ namespace HydraMenu.ui.sections
 	internal class SelfSection : ISection
 	{
 		public SelfSection() : base("Self") { }
-
-		private uint level = 199;
 
 		public override void Render()
 		{
@@ -90,38 +87,6 @@ namespace HydraMenu.ui.sections
 				PlayerControl.LocalPlayer.RpcSetSkin(DataManager.Player.Customization.Skin);
 				PlayerControl.LocalPlayer.RpcSetPet(DataManager.Player.Customization.Pet);
 			}
-
-			GUILayout.Space(5);
-			GUILayout.Label($"Update level to: {level + 1}");
-			level = (uint)GUILayout.HorizontalSlider(level, 0, 199);
-
-			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("-100"))
-			{
-				ClampSelectedLevel(level - 100);
-			}
-
-			if(GUILayout.Button("-10"))
-			{
-				ClampSelectedLevel(level - 10);
-			}
-
-			if(GUILayout.Button("+10"))
-			{
-				ClampSelectedLevel(level + 10);
-			}
-
-			if(GUILayout.Button("+100"))
-			{
-				ClampSelectedLevel(level + 100);
-			}
-			GUILayout.EndHorizontal();
-
-			if(GUILayout.Button("Send Level Update"))
-			{
-				PlayerControl.LocalPlayer.RpcSetLevel(level);
-				Hydra.notifications.Send("Level Updater", $"Your level has been changed to {level + 1}", 5);
-			}
 		}
 
 		public IEnumerator CompleteAllTasks()
@@ -163,15 +128,6 @@ namespace HydraMenu.ui.sections
 			}
 
 			Network.SendPlayAnimation((byte)task);
-		}
-
-		private void ClampSelectedLevel(uint newLevel)
-		{
-			// Do we really need to have an upper bounds on the level value?
-			// I doubt anyone will press the +100 that much anyway
-			uint maxLevel = Utilities.IsAnticheatPresent() ? 100001 : uint.MaxValue - 1;
-
-			level = Math.Clamp(newLevel, 0, maxLevel);
 		}
 	}
 }

@@ -48,6 +48,16 @@ namespace HydraMenu.ui.sections
 
 		private static Controls.PlayerColors selectedColor = Controls.PlayerColors.Red;
 
+		public override void HandleSubsectionMove(int offset)
+		{
+			if(PlayerControl.AllPlayerControls.Count == 0) return;
+
+			int currentPlayer = PlayerControl.AllPlayerControls.IndexOf(selectedPlayer);
+			int newPosition = Math.Clamp(currentPlayer + offset, 0, PlayerControl.AllPlayerControls.Count - 1);
+
+			selectedPlayer = PlayerControl.AllPlayerControls[newPosition];
+		}
+
 		public override void Render()
 		{
 			if(PlayerControl.AllPlayerControls.Count == 0)
@@ -117,6 +127,13 @@ namespace HydraMenu.ui.sections
 
 			bool hasAnticheat = Utilities.IsAnticheatPresent();
 
+			// If we want to get a player's name, we have to use NetworkedPlayerInfo::PlayerName instead of PlayerControl::name to avoid
+			// getting the incorrect name if the player is shapeshifted to another player
+			string playerInfo =
+				$"Name: {target.Data.PlayerName} ({Utilities.GetPlayerColor(target.Data)})" +
+				$"\nRole: {target.Data.RoleType}" +
+				$"\nState: " + (target.Data.IsDead ? "Dead" : "Alive");
+
 			ClientData clientData = AmongUsClient.Instance.GetClientFromCharacter(target);
 			if(clientData != null)
 			{
@@ -124,28 +141,15 @@ namespace HydraMenu.ui.sections
 
 				bool streamerMode = DataManager.Settings.Gameplay.StreamerMode;
 
-				GUILayout.Label(
-					// If we want to get a player's name, we have to use NetworkedPlayerInfo::PlayerName instead of PlayerControl::name to avoid
-					// getting the incorrect name if the player is shapeshifted to another player
-					$"Name: {target.Data.PlayerName} ({Utilities.GetPlayerColor(target.Data)})" +
-					$"\nRole: {target.Data.RoleType}" +
-					$"\nState: " + (target.Data.IsDead ? "Dead" : "Alive") +
+				playerInfo +=
 					$"\nFriendcode: " + (streamerMode ? "REDACTED" : target.Data.FriendCode) +
 					$"\nPUID: " + (streamerMode ? "REDACTED" : target.Data.Puid) +
 					$"\nLevel: {target.Data.PlayerLevel + 1}" +
 					$"\nDevice: {platform.Platform}" +
-					(target.OwnerId == AmongUsClient.Instance.HostId ? "\nHost: true" : "")
-				);
+					(target.OwnerId == AmongUsClient.Instance.HostId ? "\nHost: true" : "");
 			}
-			else
-			{
-				GUILayout.Label(
-					$"Name: {target.Data.PlayerName} ({Utilities.GetPlayerColor(target.Data)})" +
-					$"\nRole: {target.Data.RoleType}" +
-					$"\nState: " + (target.Data.IsDead ? "Dead" : "Alive") +
-					$"\nIs Dummy: true"
-				);
-			}
+
+			GUILayout.Label(playerInfo);
 
 			Hydra.routines.playerFollower.Enabled = Controls.PlayerSpecificToggle("Follow", target, ref Hydra.routines.playerFollower.following);
 

@@ -73,14 +73,19 @@ namespace HydraMenu.ui
 
 			if(!visible) return;
 
-			// Allow changing the selected section by using the up and down arrow keys
-			if(Input.GetKeyDown(KeyCode.UpArrow))
+			// Handle changing the current section through arrow keys
+			if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
 			{
-				activeTab = (byte)Math.Max(activeTab - 1, 0);
+				int offset = Input.GetKeyDown(KeyCode.UpArrow) ? -1 : 1;
+
+				activeTab = (byte)Math.Clamp(activeTab + offset, 0, sections.Length - 1);
 			}
-			else if(Input.GetKeyDown(KeyCode.DownArrow))
+
+			if(Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.PageDown))
 			{
-				activeTab = (byte)Math.Min(activeTab + 1, sections.Length - 1);
+				int offset = Input.GetKeyDown(KeyCode.PageUp) ? -1 : 1;
+
+				sections[activeTab].HandleSubsectionMove(offset);
 			}
 
 			HandleBoxMovement();
