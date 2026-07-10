@@ -20,7 +20,6 @@ namespace HydraMenu.network
 			{
 				if(Protections.BlockLargeGameMessages && parentReader.Length > MAX_MESSAGE_LENGTH)
 				{
-					Hydra.Log.LogMessage($"Blocked large game message, {parentReader.Length} bytes!");
 					return false;
 				}
 
@@ -43,7 +42,12 @@ namespace HydraMenu.network
 
 		public static void HandleGameDataInner(InnerNetClient innerNetClient, MessageReader reader, int msgNum)
 		{
-			innerNetClient.StartCoroutine(innerNetClient.HandleGameDataInner(reader, ++innerNetClient.msgNum));
+			if(Protections.BlockInvalidGameDataMessages && (reader.Tag == 3 || reader.Tag > 7))
+			{
+				return;
+			}
+
+			innerNetClient.StartCoroutine(innerNetClient.HandleGameDataInner(reader, msgNum));
 		}
 	}
 }
