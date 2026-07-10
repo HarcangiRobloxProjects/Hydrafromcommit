@@ -66,7 +66,6 @@ namespace HydraMenu.ui
 			return (PlayerColors)GUILayout.HorizontalSlider((int)currentColor, 0, Palette.ColorNames.Length);
 		}
 
-
 		public static bool PlayerSpecificToggle(string label, PlayerControl selectedPlayer, ref PlayerControl currentPlayer)
 		{
 			GUIStyle toggle = new GUIStyle(GUI.skin.toggle);
@@ -92,21 +91,12 @@ namespace HydraMenu.ui
 			return currentPlayer != null;
 		}
 
-		// It may seem like it would make more sense for the currentPlayers hashset to be a set of PlayerControls and not uint
-		// My original implementation did exactly that, however I noticed that after some time has elapsed, the UI would show that the player is no longer jailed, but yet the jail routine would still teleport them
-		// I did some debugging and noticed that when this happens, the hashset does not loses any items, and it is possible for the set to include mulitple copies of a player's PlayerControl
-		// A hashset, by its nature, should be a deduplicated, but yet the same PlayerControl could appear multiple times in the set
-		// HashSet::Contains would return false until the player was added to the set again
-		// It seems incredibily peculiar, but it would appear that a player's reference to PlayerControl can change throughout time, and stale references of a player's previous PlayerControls will still exist in memory
-		// until cleared out by the garbage collector
-		// What is even more weirder is that storing a player's reference to PlayerControl in a variable does not exhibit this behavior,
-		// comparing a stored reference of a player's PlayerControl and comparing it with a player's PlayerControl will return true
-		// Instead of storing references to PlayerControl in the hashset, we can just store the player's net id
-		// We also cannot use the player's owner ID, as on Freeplay all PlayerControls are owned by -2
-		public static bool PlayerSpecificToggle(string label, PlayerControl selectedPlayer, ref HashSet<uint> currentPlayers)
+		public static bool PlayerSpecificToggle(string label, PlayerControl selectedPlayer, ref HashSet<int> currentPlayers)
 		{
+			int hashCode = selectedPlayer.GetHashCode();
+
 			GUIStyle toggle = new GUIStyle(GUI.skin.toggle);
-			bool isSelected = selectedPlayer != null && currentPlayers.Contains(selectedPlayer.NetId);
+			bool isSelected = selectedPlayer != null && currentPlayers.Contains(hashCode);
 
 			if(isSelected)
 			{
@@ -122,11 +112,38 @@ namespace HydraMenu.ui
 			{
 				if(!isSelected)
 				{
-					currentPlayers.Add(selectedPlayer.NetId);
+					currentPlayers.Add(hashCode);
 				}
 				else
 				{
-					currentPlayers.Remove(selectedPlayer.NetId);
+					currentPlayers.Remove(hashCode);
+				}
+			}
+
+			return currentPlayers.Count != 0;
+		}
+
+		public static bool GlobalPlayerSpecificToggle(string label, ref HashSet<int> currentPlayers)
+		{
+			GUIStyle toggle = new GUIStyle(GUI.skin.toggle);
+			bool enabled = currentPlayers.Count != 0;
+
+			if(enabled)
+			{
+				toggle.normal = toggle.onNormal;
+				toggle.active = toggle.onActive;
+				toggle.hover = toggle.onHover;
+			}
+
+			if(GUILayout.Button(label, toggle))
+			{
+				if(!enabled)
+				{
+					currentPlayers.Add(int.MaxValue);
+				}
+				else
+				{
+					currentPlayers.Clear();
 				}
 			}
 

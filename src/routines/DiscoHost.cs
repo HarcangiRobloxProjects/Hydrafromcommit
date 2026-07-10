@@ -1,4 +1,5 @@
-﻿using HydraMenu.features;
+﻿using HydraMenu.network;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HydraMenu.routines
@@ -6,6 +7,7 @@ namespace HydraMenu.routines
 	public class DiscoHostRoutine : IRoutine
 	{
 		public DiscoHostRoutine() : base("DiscoHost") { }
+		public HashSet<int> targets = new HashSet<int>();
 
 		public float randomizationDelay = 0.5f;
 		private float timeElapsed = 0f;
@@ -17,16 +19,23 @@ namespace HydraMenu.routines
 			timeElapsed += Time.deltaTime;
 			if(timeElapsed < randomizationDelay) return;
 
-			Network.BatchedMessage batch = new Network.BatchedMessage();
+			BatchedMessage batch = new BatchedMessage();
 
 			foreach(PlayerControl player in PlayerControl.AllPlayerControls)
 			{
+				if(IsGlobal || targets.Contains(player.GetHashCode()))
+
 				batch.QueueSetColor(player, (byte)rnd.Next(0, 18));
 			}
 
 			batch.FinishBatch();
 
 			timeElapsed = 0f;
+		}
+
+		public bool IsGlobal
+		{
+			get { return targets.Count == 1 && targets.Contains(int.MaxValue); }
 		}
 
 		public override void OnEnable()

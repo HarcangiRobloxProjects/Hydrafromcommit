@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using HydraMenu.network;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HydraMenu
@@ -87,14 +88,14 @@ namespace HydraMenu
 
 		public static void TeleportPlayerTo(PlayerControl player, Vector2 position)
 		{
-			Network.BatchedMessage batch = new Network.BatchedMessage();
+			BatchedMessage batch = new BatchedMessage();
 			batch.QueueSnapTo(player, position);
 			batch.FinishBatch();
 		}
 
 		public static void TeleportAllTo(Vector2 position)
 		{
-			Network.BatchedMessage batch = new Network.BatchedMessage();
+			BatchedMessage batch = new BatchedMessage();
 
 			foreach(PlayerControl player in PlayerControl.AllPlayerControls)
 			{

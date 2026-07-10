@@ -39,10 +39,10 @@ namespace HydraMenu.ui.sections
 			Spoofer.useModdedProtocol = GUILayout.Toggle(Spoofer.useModdedProtocol, "Use Modded Protocol");
 
 			GUILayout.Space(5);
-			GUILayout.Label("Level Spoofer");
+			GUILayout.Label("Level Spoofer:");
 
 			Spoofer.SpoofLevel.Enabled = GUILayout.Toggle(Spoofer.SpoofLevel.Enabled, "Enabled");
-			GUILayout.Label($"Update level to: {Spoofer.SpoofLevel.newLevel}");
+			GUILayout.Label($"Spoofed Level: {Spoofer.SpoofLevel.newLevel}");
 			Spoofer.SpoofLevel.newLevel = (uint)GUILayout.HorizontalSlider(Spoofer.SpoofLevel.newLevel, 1, 200);
 
 			GUILayout.BeginHorizontal();
@@ -74,6 +74,7 @@ namespace HydraMenu.ui.sections
 			}
 
 			GUILayout.Space(5);
+			GUILayout.Label("Platform Spoofer:");
 
 			GUILayout.Label($"Spoofed Platform: {Spoofer.spoofedPlatform}");
 			Spoofer.spoofedPlatform = (Platforms)GUILayout.HorizontalSlider((float)Spoofer.spoofedPlatform, 0, 10);

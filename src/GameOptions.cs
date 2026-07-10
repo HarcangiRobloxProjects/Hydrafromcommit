@@ -1,6 +1,7 @@
 ﻿using AmongUs.GameOptions;
 using Hazel;
 using HydraMenu.features;
+using HydraMenu.network;
 
 namespace HydraMenu
 {
@@ -37,7 +38,9 @@ namespace HydraMenu
 			writer.WriteBytesAndSize(GameManager.Instance.LogicOptions.gameOptionsFactory.ToBytes(options, AprilFoolsMode.IsAprilFoolsModeToggledOn));
 			writer.EndMessage();
 
-			Network.SendDataFlag(GameManager.Instance.NetId, writer, targetClientId);
+			BatchedMessage batch = new BatchedMessage(targetClientId);
+			batch.QueueDataFlag(GameManager.Instance.NetId, writer);
+			batch.FinishBatch();
 		}
 
 		private static int FindLogicOptionsIndex()

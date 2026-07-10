@@ -1,5 +1,6 @@
 ﻿using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HydraMenu.features;
+using HydraMenu.network;
 using InnerNet;
 using System;
 using System.Collections;
@@ -140,7 +141,7 @@ namespace HydraMenu.ui.sections
 				{
 					MeetingHud.VoterState[] votes = Array.Empty<MeetingHud.VoterState>();
 
-					Network.BatchedMessage batch = new Network.BatchedMessage();
+					BatchedMessage batch = new BatchedMessage();
 					batch.QueueVotingComplete(votes, null, false);
 					batch.QueueCloseMeeting();
 					batch.FinishBatch();
@@ -167,7 +168,7 @@ namespace HydraMenu.ui.sections
 
 			GUILayout.Space(5);
 			GUILayout.Label("Disco Party:");
-			Hydra.routines.discoHost.Enabled = GUILayout.Toggle(Hydra.routines.discoHost.Enabled, "Enabled");
+			Hydra.routines.discoHost.Enabled = Controls.GlobalPlayerSpecificToggle("Enabled", ref Hydra.routines.discoHost.targets);
 
 			GUILayout.Label($"Color randomization delay: {Hydra.routines.discoHost.randomizationDelay:F2}s");
 			Hydra.routines.discoHost.randomizationDelay = GUILayout.HorizontalSlider(Hydra.routines.discoHost.randomizationDelay, 0.1f, 2.0f);
@@ -189,7 +190,7 @@ namespace HydraMenu.ui.sections
 				return;
 			}
 
-			Network.BatchedMessage batch = new Network.BatchedMessage();
+			BatchedMessage batch = new BatchedMessage();
 
 			foreach(PlayerControl player in PlayerControl.AllPlayerControls)
 			{
@@ -217,7 +218,7 @@ namespace HydraMenu.ui.sections
 
 			ShipStatus ship = asyncHandle.Result.GetComponent<ShipStatus>();
 
-			Network.BatchedMessage batch = new Network.BatchedMessage();
+			BatchedMessage batch = new BatchedMessage();
 			batch.QueueSpawn(ship, -2, SpawnFlags.None);
 			batch.FinishBatch();
 

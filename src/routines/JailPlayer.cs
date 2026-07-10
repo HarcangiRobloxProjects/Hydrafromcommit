@@ -9,7 +9,7 @@ namespace HydraMenu.routines
 	{
 		public JailPlayerRoutine() : base("JailPlayer") { }
 
-		public HashSet<uint> targets = new HashSet<uint>();
+		public HashSet<int> targets = new HashSet<int>();
 
 		// For the sake of performance, only check if players are outside of the jail every 500ms
 		public float delay = 0.5f;
@@ -25,7 +25,7 @@ namespace HydraMenu.routines
 
 			foreach(PlayerControl player in PlayerControl.AllPlayerControls)
 			{
-				if(!targets.Contains(player.NetId)) continue;
+				if(!targets.Contains(player.GetHashCode())) continue;
 
 				SystemTypes room = GetRoomForPlayer(player);
 				if(room != jailRoom)
