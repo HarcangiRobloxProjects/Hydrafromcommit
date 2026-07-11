@@ -10,7 +10,7 @@ namespace HydraMenu.features
 		public static bool BlockLargeGameMessages { get; set; } = true;
 		public static bool BlockInvalidGameDataMessages { get; set; } = true;
 		public static bool BlockUnauthorizedSystemUpdates { get; set; } = true;
-		punlic static bool ProtectAgainstNonHostKickExploit { get; set; } = true;
+		public static bool ProtectAgainstNonHostKickExploit { get; set; } = true;
 
 		[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SetEndpoint))]
 		public static class ForceDTLS

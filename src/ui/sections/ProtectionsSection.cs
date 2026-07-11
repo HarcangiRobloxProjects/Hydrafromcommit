@@ -22,6 +22,7 @@ namespace HydraMenu.ui.sections
 
 			Protections.BypassShapeshiftRatelimits.Enabled = GUILayout.Toggle(Protections.BypassShapeshiftRatelimits.Enabled, "Bypass ratelimits for Shapeshift RPC");
 			Protections.Votekicks.Enabled = GUILayout.Toggle(Protections.Votekicks.Enabled, "Prevent being votekicked as host");
+			Protections.ProtectAgainstNonHostKickExploit = GUILayout.Toggle(Protections.ProtectAgainstNonHostKickExploit, "Protect against non-host kick exploit");
 		}
 	}
 }
