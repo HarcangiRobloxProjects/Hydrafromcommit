@@ -12,6 +12,7 @@ namespace HydraMenu.ui.sections
 
 		public override void Render()
 		{
+		    BypassImmortalityPatch.Enabled = GUILayout.Toggle(BypassImmortalityPatch.Enabled, "Bypass Immortality");
 			Roles.AllowVentingForCrewmates = GUILayout.Toggle(Roles.AllowVentingForCrewmates, "Vent As Crewmate");
 			Roles.MoveModifier.MoveInVents = GUILayout.Toggle(Roles.MoveModifier.MoveInVents, "Move In Vents");
 
