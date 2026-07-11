@@ -1,5 +1,7 @@
-﻿using HarmonyLib;
+﻿using AmongUs.InnerNet.GameDataMessages;
+using HarmonyLib;
 using Hazel;
+using HydraMenu.anticheat;
 using HydraMenu.features;
 using InnerNet;
 
@@ -44,6 +46,13 @@ namespace HydraMenu.network
 		public static void HandleGameDataInner(InnerNetClient innerNetClient, MessageReader reader, int msgNum)
 		{
 			if(Protections.BlockInvalidGameDataMessages && (reader.Tag == 3 || reader.Tag > 7))
+			{
+				reader.Recycle();
+				return;
+			}
+
+			bool isValid = Anticheat.HandleGameData((GameDataTypes)reader.Tag, reader);
+			if(!isValid)
 			{
 				reader.Recycle();
 				return;

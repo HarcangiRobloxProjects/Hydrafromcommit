@@ -1,9 +1,9 @@
 ﻿using Hazel;
 using System;
 
-namespace HydraMenu.anticheat.rpc
+namespace HydraMenu.anticheat
 {
-	internal abstract class RpcCheck
+	internal abstract class RpcCheck : ICheck
 	{
 		public virtual bool Enabled { get; set; } = true;
 
