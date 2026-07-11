@@ -1,5 +1,7 @@
-﻿using HarmonyLib;
+﻿using AmongUs.InnerNet.GameDataMessages;
+using HarmonyLib;
 using Hazel;
+using HydraMenu.anticheat.gamedata;
 using HydraMenu.anticheat.rpc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,11 @@ namespace HydraMenu.anticheat
 	internal class Anticheat
 	{
 		public static bool Enabled { get; set; } = true;
+
+		public static Dictionary<GameDataTypes, GameDataCheck> GameDataHandlers = new Dictionary<GameDataTypes, GameDataCheck>()
+		{
+			{ GameDataTypes.ReadyFlag, new ClientReady() }
+		};
 
 		public static Dictionary<RpcCalls, RpcCheck> RpcHandlers = new Dictionary<RpcCalls, RpcCheck>()
 		{
@@ -79,7 +86,7 @@ namespace HydraMenu.anticheat
 		[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.HandleRpc))]
 		class OnShipStatusRPC
 		{
-			static bool Prefix(ShipStatus __instance, byte callId, MessageReader reader)
+			static bool Prefix(byte callId, MessageReader reader)
 			{
 				return HandleRpc(typeof(ShipStatus), null, (RpcCalls)callId, reader);
 			}
@@ -114,6 +121,22 @@ namespace HydraMenu.anticheat
 			return true;
 		}
 
+		public static bool HandleGameData(GameDataTypes type, MessageReader reader)
+		{
+			GameDataHandlers.TryGetValue(type, out GameDataCheck gameDataCheck);
+			if(!Enabled || gameDataCheck == null || !gameDataCheck.Enabled) return true;
+
+			int oldReadPosition = reader.Position;
+			bool blockMessage = false;
+
+			gameDataCheck.Validate(reader, ref blockMessage);
+			if(discardRpc && blockMessage) return false;
+
+			// Put the read position back to its previous spot
+			reader.Position = oldReadPosition;
+			return true;
+		}
+
 		public static void Flag(PlayerControl player, string reason, bool shouldPunish = true)
 		{
 			// Sanity check, make sure that we are not flagging ourselves
@@ -129,6 +152,15 @@ namespace HydraMenu.anticheat
 			if(AmongUsClient.Instance.AmHost && shouldPunish)
 			{
 				Punish(player);
+			}
+		}
+
+		// If we do not know which player caused the violation
+		public static void Flag(string reason)
+		{
+			if(sendNotification)
+			{
+				Hydra.notifications.Send("Anticheat", reason, NotificationDuration);
 			}
 		}
 
