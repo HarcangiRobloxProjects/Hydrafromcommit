@@ -177,13 +177,11 @@ namespace HydraMenu
 				return;
 			}
 
-			/*
 			if(AmongUsClient.Instance.AmHost)
 			{
 				player.MyPhysics.RpcBootFromVent(ventId);
 				return;
 			}
-			*/
 
 			if(!Troll.VentSeqIds.ContainsKey(player))
 			{
