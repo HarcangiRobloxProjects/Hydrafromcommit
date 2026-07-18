@@ -1,4 +1,4 @@
-﻿using AmongUs.Data;
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HydraMenu.features;
@@ -6,6 +6,7 @@ using HydraMenu.network;
 using InnerNet;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HydraMenu.ui.sections
@@ -50,6 +51,9 @@ namespace HydraMenu.ui.sections
 		private Controls.PlayerColors selectedColor = Controls.PlayerColors.Red;
 		private int selectedVent = 0;
 
+		private static Dictionary<int, int> _voteCounts = new Dictionary<int, int>();
+		private static Dictionary<int, float> _voteTimers = new Dictionary<int, float>();
+
 		public override void HandleSubsectionMove(int offset)
 		{
 			if(PlayerControl.AllPlayerControls.Count == 0) return;
@@ -73,7 +77,6 @@ namespace HydraMenu.ui.sections
 			for(byte i = 0; i < PlayerControl.AllPlayerControls.Count; i++)
 			{
 				PlayerControl player = PlayerControl.AllPlayerControls[i];
-				// Wait for player data to fully load
 				if(player.Data == null) continue;
 
 				RenderPlayerSelection(i, player);
@@ -102,7 +105,7 @@ namespace HydraMenu.ui.sections
 
 			if(player.OwnerId == AmongUsClient.Instance.HostId)
 			{
-				style.normal.textColor = new Color(1.0f, 0.84f, 0.0f); // #FFD700
+				style.normal.textColor = new Color(1.0f, 0.84f, 0.0f);
 			}
 
 			if(GUI.Button(playerInfo, playerName, style))
@@ -119,6 +122,42 @@ namespace HydraMenu.ui.sections
 			return RoleManager.IsImpostorRole(role) ? "red" : "#8afcfc";
 		}
 
+		public static void VotekickTarget(PlayerControl target)
+		{
+			if (target == null || target.Data == null)
+			{
+				Hydra.notifications.Send("Votekick", "No player selected.");
+				return;
+			}
+			if (VoteBanSystem.Instance == null)
+			{
+				Hydra.notifications.Send("Votekick", "VoteBanSystem isn't available.");
+				return;
+			}
+			int targetClientId = target.OwnerId;
+			if (targetClientId == AmongUsClient.Instance.ClientId)
+			{
+				Hydra.notifications.Send("Votekick", "You cannot votekick yourself.");
+				return;
+			}
+			VoteBanSystem.Instance.CmdAddVote(targetClientId);
+			if (!_voteCounts.ContainsKey(targetClientId))
+			{
+				_voteCounts[targetClientId] = 0;
+			}
+			_voteCounts[targetClientId]++;
+			_voteTimers[targetClientId] = Time.time + 10f;
+			int currentVotes = _voteCounts[targetClientId];
+			Hydra.notifications.Send("Votekick", $"Vote sent to {target.Data.PlayerName} ({currentVotes}/{3} votes)");
+			if (currentVotes >= 3)
+			{
+				Hydra.notifications.Send("Votekick", "Player " + target.Data.PlayerName + " has been kicked!");
+				_voteCounts.Remove(targetClientId);
+				_voteTimers.Remove(targetClientId);
+			}
+			Hydra.Log.LogInfo($"[Votekick] Voted to kick {target.Data.PlayerName} - Votes: {currentVotes}/{3}");
+		}
+
 		private void RenderPlayerControls(PlayerControl target)
 		{
 			if(target == null || target.Data == null)
@@ -129,8 +168,6 @@ namespace HydraMenu.ui.sections
 
 			bool hasAnticheat = Utilities.IsAnticheatPresent();
 
-			// If we want to get a player's name, we have to use NetworkedPlayerInfo::PlayerName instead of PlayerControl::name to avoid
-			// getting the incorrect name if the player is shapeshifted to another player
 			string playerInfo =
 				$"Name: {target.Data.PlayerName} ({Utilities.GetPlayerColor(target.Data)})" +
 				$"\nRole: {target.Data.RoleType}" +
@@ -159,7 +196,6 @@ namespace HydraMenu.ui.sections
 			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Teleport"))
 			{
-				// We do not want to use PlayerControl::GetTruePosition() here as it would teleport us to the player's feet
 				Teleporter.TeleportTo(target.transform.position);
 			}
 
@@ -189,10 +225,17 @@ namespace HydraMenu.ui.sections
 				Utilities.AttemptStartMeeting(PlayerControl.LocalPlayer, target.Data);
 			}
 
+			GUILayout.BeginHorizontal();
 			if(GUILayout.Button("Kick Player"))
 			{
 				Utilities.KickPlayer(target);
 			}
+
+			if(GUILayout.Button("Votekick Target"))
+			{
+				VotekickTarget(target);
+			}
+			GUILayout.EndHorizontal();
 
 			GUILayout.Label($"Teleport player to vent: {selectedVent}");
 			selectedVent = (int)GUILayout.HorizontalSlider(selectedVent, 0, ShipStatus.Instance != null ? ShipStatus.Instance.AllVents.Count - 1 : 10);
@@ -252,7 +295,6 @@ namespace HydraMenu.ui.sections
 				MeetingHud.VoterState[] votes = Array.Empty<MeetingHud.VoterState>();
 
 				batch.QueueVotingComplete(votes, target.Data, false);
-				// If we created a MeetingHud object then it will be destroyed by the RpcClose function
 				batch.QueueCloseMeeting();
 				batch.FinishBatch();
 			}
@@ -322,7 +364,6 @@ namespace HydraMenu.ui.sections
 
 			if(GUILayout.Button("Super Speed"))
 			{
-				// The vanilla anticheat prevents us from being able to exceed speeds greater than 3.0f
 				float maxSpeed = Utilities.IsAnticheatPresent() ? 3.0f : 5.0f;
 
 				IGameOptions gameOptions = GameOptions.CreateCloneOptions(GameManager.Instance.LogicOptions.currentGameOptions);
@@ -331,27 +372,6 @@ namespace HydraMenu.ui.sections
 				GameOptions.SendGameOptionsToClient(gameOptions, target.OwnerId);
 			}
 			GUILayout.EndHorizontal();
-
-			/*
-			// The problem with changing the TaskBarMode is that if we remove the task bar, we are not able to bring it back
-			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("Hide Task Bar"))
-			{
-				IGameOptions gameOptions = GameOptions.CreateCloneOptions(GameManager.Instance.LogicOptions.currentGameOptions);
-				gameOptions.SetInt(Int32OptionNames.TaskBarMode, (int)TaskBarMode.Invisible);
-
-				GameOptions.SendGameOptionsToClient(gameOptions, target.OwnerId);
-			}
-
-			if(GUILayout.Button("Show Task Bar"))
-			{
-				IGameOptions gameOptions = GameOptions.CreateCloneOptions(GameManager.Instance.LogicOptions.currentGameOptions);
-				gameOptions.SetInt(Int32OptionNames.TaskBarMode, (int)TaskBarMode.Normal);
-
-				GameOptions.SendGameOptionsToClient(gameOptions, target.OwnerId);
-			}
-			GUILayout.EndHorizontal();
-			*/
 
 			if(GUILayout.Button("Reset to Defaults"))
 			{
@@ -397,8 +417,6 @@ namespace HydraMenu.ui.sections
 
 			Hydra.Log.LogInfo($"Attempting to kill {target.Data.PlayerName}, we are not the host so we have to use the CheckMurder RPC");
 
-			// The CheckMurder RPC handler will not authorize kills if you are not the imposter or you are inside a meeting
-			// There are more checks, but I do not think it is worth adding them all here
 			if(!RoleManager.IsImpostorRole(PlayerControl.LocalPlayer.Data.RoleType))
 			{
 				Hydra.notifications.Send("Murder Player", "You can only murder players when you are an Impostor, unless you are the host of the lobby.");
@@ -436,8 +454,6 @@ namespace HydraMenu.ui.sections
 
 			if(target != PlayerControl.LocalPlayer)
 			{
-				// On official servers, we are not able to send MurderPlayer RPCs with other player net IDs
-				// so we need to shapeshift into our desired player and kill everyone ourselves
 				Utilities.ShapeshiftPlayer(PlayerControl.LocalPlayer, target, false);
 			}
 
@@ -448,7 +464,6 @@ namespace HydraMenu.ui.sections
 				PlayerControl.LocalPlayer.RpcMurderPlayer(player, true);
 			}
 
-			// Wait three seconds so all players can see which player we are framing
 			yield return Effects.Wait(3.0f);
 
 			Host.DisableGameEnd.Enabled = false;
