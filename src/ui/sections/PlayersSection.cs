@@ -153,6 +153,7 @@ namespace HydraMenu.ui.sections
 
 			GUILayout.Label(playerInfo);
 
+			Visuals.SpectatePlayer.Enabled = Controls.PlayerSpecificToggle("Spectate", target, ref Visuals.SpectatePlayer.target);
 			Hydra.routines.playerFollower.Enabled = Controls.PlayerSpecificToggle("Follow", target, ref Hydra.routines.playerFollower.following);
 			Hydra.routines.jailPlayer.Enabled = Controls.PlayerSpecificToggle("Place in Jail", target, ref Hydra.routines.jailPlayer.targets);
 
