@@ -4,7 +4,7 @@ namespace HydraMenu.features
 {
     internal class Visuals
     {
-        // Is there a better way of implanting fullbright?
+		// Is there a better way of implementing fullbright?
         // This current method does not allow you to see through walls due to shadows
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
         public static class Fullbright

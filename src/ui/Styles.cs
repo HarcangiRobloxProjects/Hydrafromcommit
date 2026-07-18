@@ -154,7 +154,7 @@ namespace HydraMenu.ui
 		{
 			foreach(Texture2D texture in CachedTextures.Values)
 			{
-				Texture2D.Destroy(texture);
+				Object.Destroy(texture);
 			}
 			CachedTextures.Clear();
 		}

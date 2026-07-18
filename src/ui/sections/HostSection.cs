@@ -14,6 +14,7 @@ namespace HydraMenu.ui.sections
 		public HostSection() : base("Host") { }
 
 		private byte selectedMap = 0;
+		private Controls.PlayerColors selectedColor = 0;
 
 		public override void Render()
 		{
@@ -167,8 +168,24 @@ namespace HydraMenu.ui.sections
 			}
 
 			GUILayout.Space(5);
-			GUILayout.Label("Disco Party:");
-			Hydra.routines.discoHost.Enabled = Controls.GlobalPlayerSpecificToggle("Enabled", ref Hydra.routines.discoHost.targets);
+			GUILayout.Label("Color Controls:");
+
+			GUILayout.Label($"Change everyone's color to: {selectedColor}");
+			selectedColor = Controls.HorizontalColorSlider(selectedColor);
+
+			if(GUILayout.Button("Change Colors"))
+			{
+				BatchedMessage batch = new BatchedMessage();
+
+				foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+				{
+					batch.QueueSetColor(player, (byte)selectedColor);
+				}
+
+				batch.FinishBatch();
+			}
+
+			Hydra.routines.discoHost.Enabled = Controls.GlobalPlayerSpecificToggle("Disco Party", ref Hydra.routines.discoHost.targets);
 
 			GUILayout.Label($"Color randomization delay: {Hydra.routines.discoHost.randomizationDelay:F2}s");
 			Hydra.routines.discoHost.randomizationDelay = GUILayout.HorizontalSlider(Hydra.routines.discoHost.randomizationDelay, 0.1f, 2.0f);
