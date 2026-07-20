@@ -107,6 +107,7 @@ namespace HydraMenu.ui.sections
 			}
 
 			GUILayout.Space(5);
+			// Automatically close and open all doors at a set interval
 			GUILayout.Label("Door Troller:");
 			Hydra.routines.doorTroller.Enabled = GUILayout.Toggle(Hydra.routines.doorTroller.Enabled, "Enabled");
 
