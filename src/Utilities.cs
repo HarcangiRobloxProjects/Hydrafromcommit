@@ -28,7 +28,7 @@ namespace HydraMenu
 
 			System.Random rnd = new System.Random();
 
-			// Some modded lobbies may have more than 18 players, which means there wont be enough unique colors for everyone
+			// Some modded lobbies may have more than 18 players, which means there will not be enough unique colors for everyone
 			// so we should take that edge case into account
 			if(colors.Count == 0)
 			{

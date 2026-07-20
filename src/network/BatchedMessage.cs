@@ -173,7 +173,7 @@ namespace HydraMenu.network
 			writer.EndMessage();
 		}
 
-		public void QueueSetHatStr(PlayerControl source, string hat, byte seqid)
+		public void QueueSetHatStr(PlayerControl source, string hat, byte seqId)
 		{
 			if(AmTarget)
 			{
@@ -184,11 +184,11 @@ namespace HydraMenu.network
 			writer.WritePacked(source.NetId);
 			writer.Write((byte)RpcCalls.SetHatStr);
 			writer.Write(hat);
-			writer.Write(seqid);
+			writer.Write(seqId);
 			writer.EndMessage();
 		}
 
-		public void QueueSetSkinStr(PlayerControl source, string skin, byte seqid)
+		public void QueueSetSkinStr(PlayerControl source, string skin, byte seqId)
 		{
 			if(AmTarget)
 			{
@@ -199,11 +199,11 @@ namespace HydraMenu.network
 			writer.WritePacked(source.NetId);
 			writer.Write((byte)RpcCalls.SetSkinStr);
 			writer.Write(skin);
-			writer.Write(seqid);
+			writer.Write(seqId);
 			writer.EndMessage();
 		}
 
-		public void QueueSetPetStr(PlayerControl source, string pet, byte seqid)
+		public void QueueSetPetStr(PlayerControl source, string pet, byte seqId)
 		{
 			if(AmTarget)
 			{
@@ -214,11 +214,11 @@ namespace HydraMenu.network
 			writer.WritePacked(source.NetId);
 			writer.Write((byte)RpcCalls.SetPetStr);
 			writer.Write(pet);
-			writer.Write(seqid);
+			writer.Write(seqId);
 			writer.EndMessage();
 		}
 
-		public void QueueSetVisorStr(PlayerControl source, string visor, byte seqid)
+		public void QueueSetVisorStr(PlayerControl source, string visor, byte seqId)
 		{
 			if(AmTarget)
 			{
@@ -229,11 +229,11 @@ namespace HydraMenu.network
 			writer.WritePacked(source.NetId);
 			writer.Write((byte)RpcCalls.SetVisorStr);
 			writer.Write(visor);
-			writer.Write(seqid);
+			writer.Write(seqId);
 			writer.EndMessage();
 		}
 
-		public void QueueSetNameplateStr(PlayerControl source, string nameplate, byte seqid)
+		public void QueueSetNameplateStr(PlayerControl source, string nameplate, byte seqId)
 		{
 			if(AmTarget)
 			{
@@ -244,7 +244,7 @@ namespace HydraMenu.network
 			writer.WritePacked(source.NetId);
 			writer.Write((byte)RpcCalls.SetNamePlateStr);
 			writer.Write(nameplate);
-			writer.Write(seqid);
+			writer.Write(seqId);
 			writer.EndMessage();
 		}
 

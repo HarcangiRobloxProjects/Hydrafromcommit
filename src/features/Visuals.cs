@@ -1,10 +1,11 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace HydraMenu.features
 {
     internal class Visuals
     {
-        // Is there a better way of implanting fullbright?
+		// Is there a better way of implementing Fullbright?
         // This current method does not allow you to see through walls due to shadows
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CalculateLightRadius))]
         public static class Fullbright
@@ -109,6 +110,39 @@ namespace HydraMenu.features
 				else
 				{
 					return true;
+				}
+			}
+		}
+
+		public static class SpectatePlayer
+		{
+			private static bool _enabled = false;
+			private static bool wasShadowsEnabled = false;
+
+			public static PlayerControl target;
+
+			public static bool Enabled
+			{
+				get { return _enabled; }
+				set
+				{
+					if(_enabled == value) return;
+					_enabled = value;
+
+					FollowerCamera camera = Camera.main.GetComponent<FollowerCamera>();
+
+					if(value)
+					{
+						camera.SetTarget(target);
+						wasShadowsEnabled = HudManager._instance.ShadowQuad.gameObject.active;
+						HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+					}
+					else
+					{
+						camera.SetTarget(PlayerControl.LocalPlayer);
+
+						if(wasShadowsEnabled) HudManager.Instance.ShadowQuad.gameObject.SetActive(true);
+					}
 				}
 			}
 		}
