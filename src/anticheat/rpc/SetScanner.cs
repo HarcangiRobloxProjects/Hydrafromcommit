@@ -9,7 +9,7 @@ namespace HydraMenu.anticheat.rpc
 			bool scanning = reader.ReadBoolean();
 			// byte seqId = reader.ReadByte();
 
-			// The medbay scan task can only be done if the map itself exists
+			// The Medbay scan task can only be done if the map itself exists
 			// If the game has not started yet (which the vanilla anticheat should already check), or if we're in the lobby to actual game transition, or the map was despawned,
 			// then we know that SetScanner RPC was sent illegitimately
 			if(ShipStatus.Instance == null && scanning)
@@ -35,7 +35,7 @@ namespace HydraMenu.anticheat.rpc
 			bool hasMedbayScanTask = false;
 			foreach(NetworkedPlayerInfo.TaskInfo task in player.Data.Tasks)
 			{
-				if(task.TypeId != (byte)TaskTypes.SubmitScan) continue;
+				if(task.Id != (byte)TaskTypes.SubmitScan) continue;
 
 				hasMedbayScanTask = true;
 				break;
