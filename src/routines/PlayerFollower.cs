@@ -1,4 +1,6 @@
-﻿namespace HydraMenu.routines
+﻿using UnityEngine;
+
+namespace HydraMenu.routines
 {
 	public class PlayerFollowerRoutine : IRoutine
 	{
@@ -32,6 +34,7 @@
 		protected override void OnEnable()
 		{
 			PlayerControl.LocalPlayer.moveable = false;
+			PlayerControl.LocalPlayer.NetTransform.body.velocity = Vector2.zero;
 		}
 
 		protected override void OnDisable()

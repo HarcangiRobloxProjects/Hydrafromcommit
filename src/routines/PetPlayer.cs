@@ -49,6 +49,7 @@ namespace HydraMenu.routines
 			// Attempting to move will result in our petting hand following our movement
 			// To avoid unexpected behavior, we prevent the player from moving
 			PlayerControl.LocalPlayer.moveable = false;
+			PlayerControl.LocalPlayer.NetTransform.body.velocity = Vector2.zero;
 		}
 
 		protected override void OnDisable()
