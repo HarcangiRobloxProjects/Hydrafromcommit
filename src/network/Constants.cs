@@ -24,7 +24,7 @@
 			AirshipShipStatus = 8,
 			GameManager = 10,
 			NetworkedPlayerInfo = 11,
-			VoteBanSysten = 12,
+			VoteBanSystem = 12,
 			FungleShipStatus = 13
 		}
 	}
