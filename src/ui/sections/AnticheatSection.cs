@@ -15,7 +15,7 @@ namespace HydraMenu.ui.sections
 
 			GUILayout.Space(5);
 			GUILayout.Label("RPCs that should be checked by the anticheat:");
-			foreach(var (rpcCall, handler) in Anticheat.RpcHandlers)
+			foreach((RpcCalls rpcCall, RpcCheck handler) in Anticheat.RpcHandlers)
 			{
 				handler.Enabled = GUILayout.Toggle(handler.Enabled, $"{rpcCall}");
 			}
