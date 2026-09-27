@@ -48,7 +48,7 @@ namespace HydraMenu.ui.sections
 
 			if(GUILayout.Button("Force Start Game"))
 			{
-				AmongUsClient.Instance.StartGame();
+				ForceStartGame();
 			}
 
 			if(GUILayout.Button("Kill Everyone"))
@@ -169,6 +169,33 @@ namespace HydraMenu.ui.sections
 
 			GUILayout.Label($"Color randomization delay: {Hydra.routines.discoHost.RandomizationDelay:F2}s");
 			Hydra.routines.discoHost.RandomizationDelay = GUILayout.HorizontalSlider(Hydra.routines.discoHost.RandomizationDelay, 0.1f, 2.0f);
+		}
+
+		private void ForceStartGame()
+		{
+			// Local lobbies are the only lobbies where we can start the game without host
+			if(AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && !AmongUsClient.Instance.AmHost)
+			{
+				Hydra.notifications.Send("Start Game", "This feature can only be used if you are the host of the lobby.");
+				return;
+			}
+
+			// The vanilla anticheat prevents players from sending a ClientReady message more than once
+			// If we attempt to start the game twice, then all players will send another ClientReady message, and the entire lobby will be kicked
+			if(AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && Utilities.IsAnticheatPresent())
+			{
+				Hydra.notifications.Send("Start Game", "The game has already been started.");
+				return;
+			}
+
+			AmongUsClient.Instance.StartGame();
+
+			// PlayerControl::RpcSetRole has checks against playing the intro cutscene in Freeplay
+			// To avoid a blackscreen in Freeplay, we force the intro cutscene to start
+			if(AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
+			{
+				HudManager.Instance.StartCoroutine(HudManager.Instance.CoShowIntro());
+			}
 		}
 
 		private static void KillAllPlayers()

@@ -6,6 +6,7 @@ using Il2CppInterop.Runtime;
 using InnerNet;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HydraMenu.modules
 {
@@ -371,7 +372,7 @@ namespace HydraMenu.modules
 		}
 
 		[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote))]
-		class PlayerCastVote
+		class PlayerCastVoteHost
 		{
 			static void Postfix(PlayerId srcPlayerId, PlayerId suspectPlayerId)
 			{
@@ -380,6 +381,52 @@ namespace HydraMenu.modules
 				if(voter == null || votee == null) return;
 
 				PublishEvent(OnPlayerCastVote, voter, votee);
+			}
+		}
+
+		[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Deserialize))]
+		class PlayerCastVoteNonHost
+		{
+			static void Prefix(MeetingHud __instance, MessageReader reader)
+			{
+				if(AmongUsClient.Instance.AmHost) return;
+
+				int oldReadPosition = reader.Position;
+
+				int playerStateCount = reader.ReadPackedInt32();
+				if(playerStateCount > 1024 || playerStateCount > reader.BytesRemaining) goto end;
+
+				Dictionary<byte, byte> playerVotes = new Dictionary<byte, byte>();
+
+				for(int i = 0; i < playerStateCount; i++)
+				{
+					MessageReader msg = reader.ReadMessage();
+					byte voteeId = msg.ReadByte();
+
+					playerVotes[msg.Tag] = voteeId;
+				}
+
+				// Compare with what we have with new data to see vote changes
+				foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+				{
+					if(player.Data == null) continue;
+
+					PlayerVoteArea oldState = __instance.playerStates.FirstOrDefault(state => state.PlayerId == player.PlayerId);
+
+					bool inOld = oldState != null && oldState.VotedForId != 255;
+					bool inNew = playerVotes.TryGetValue(player.PlayerId, out byte voteeId) && voteeId != 255;
+
+					if(!inOld && inNew)
+					{
+						NetworkedPlayerInfo votee = GameData.Instance.GetPlayerById(voteeId);
+						if(votee == null) continue;
+
+						PublishEvent(OnPlayerCastVote, player.Data, votee);
+					}
+				}
+
+				end:
+				reader.Position = oldReadPosition;
 			}
 		}
 

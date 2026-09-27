@@ -136,7 +136,7 @@ namespace HydraMenu.modules.host
 				_enabled = false;
 			}
 
-			if(!AmongUsClient.Instance.AmHost)
+			if(AmongUsClient.Instance.NetworkMode != NetworkModes.LocalGame && !AmongUsClient.Instance.AmHost)
 			{
 				Hydra.notifications.Send("Temp Ban All", "You need to be the host of the lobby in order to use this feature.");
 				Enabled = false;
