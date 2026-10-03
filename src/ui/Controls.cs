@@ -8,7 +8,7 @@ namespace HydraMenu.ui
 {
 	internal class Controls
 	{
-		// The RoleTypes enum has some weird gaps, everything from Crewmate (0) to Tracker (10) is normal, but then Detective is 12 and Viper is 18
+		// The RoleTypes enum has some weird gaps, everything from Crewmate (0) to Tracker (10) is normal, but then Detective is 12, Viper is 18, and Spirit Guide is 21
 		// https://www.innersloth.com/2026-roadmap-part-1/
 		// The Among Us 2026 roadmap does state that there are currently 15 prototype roles in the works,
 		// could these gaps be attributed to roles that have not been added to the retail version of the game?
@@ -27,6 +27,7 @@ namespace HydraMenu.ui
 			RoleTypes.Viper,
 			RoleTypes.CrewmateGhost,
 			RoleTypes.GuardianAngel,
+			RoleTypes.SpiritGuide,
 			RoleTypes.ImpostorGhost
 		};
 

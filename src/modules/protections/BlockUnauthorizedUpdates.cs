@@ -4,9 +4,9 @@ namespace HydraMenu.modules.protections
 {
 	internal class BlockUnauthorizedUpdates : Module
 	{
-		// All ShipStatus RPCs (CloseDoorsOfType and UpdateSystem) should only ever be sent to the host
+		// The CloseDoorsOfType and UpdateSystem RPCs should only ever be sent to the host
 		// It is possible for a non-host to send system updates to anyone they want
-		// and cause a desync between the actual game state and their game state
+		// and cause a desync between our game state and the actual game state
 		public BlockUnauthorizedUpdates() : base("BlockUnauthorizedUpdates")
 		{
 			base.Enabled = true;
@@ -20,9 +20,16 @@ namespace HydraMenu.modules.protections
 		[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.HandleRpc))]
 		class OnShipStatusRPC
 		{
-			static bool Prefix()
+			static bool Prefix(byte callId)
 			{
-				return !Instance.Enabled || AmongUsClient.Instance.AmHost;
+				if(!Instance.Enabled) return true;
+
+				if(!AmongUsClient.Instance.AmHost && (callId == (byte)RpcCalls.UpdateSystem || callId == (byte)RpcCalls.CloseDoorsOfType))
+				{
+					return false;
+				}
+
+				return true;
 			}
 		}
 	}
