@@ -1,7 +1,6 @@
-﻿using HydraMenu.modules;
+﻿using HydraMenu.assets;
+using HydraMenu.modules;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace HydraMenu.ui.sections
@@ -10,38 +9,18 @@ namespace HydraMenu.ui.sections
 	{
 		public SpooferSection() : base("Spoofer") { }
 
-		public readonly Dictionary<string, int> versions = new Dictionary<string, int>()
-		{
-			// Current version at runtime
-			// VersionShower::Start uses ReferenceDataManager.Refdata.userFacingVersion to get version strings such as "17.1"
-			// however that doesn't seem to before the game fully loads, so we have to use Constants::AddressablesVersion to get a less human-understandable version string
-			{ $"{Constants.AddressablesVersion} (Current)", Constants.GetBroadcastVersion() },
-			{ "16.1.0", 50632950 },
-			{ "17.1", 50643450 },
-			{ "17.1.2", 50647000 },
-			{ "17.2", 50645050 },
-			{ "17.2.1", 50652900 },
-			{ "17.2.2", 50653700 },
-			{ "17.3", 50652400 },
-			{ "17.4", 50656300 },
-			{ "18.0", 50663350 },
-			{ "18.0 (build 7348)", 50663400 },
-			{ "19.0 (build 7488)", 50663650 }, // iOS
-			{ "19.0 (build 7489)", 50663600 } // PC
-		};
-
-		private int versionSelection = 0;
-
 		public override void Render()
 		{
 			GUILayout.Label("Version Spoofer:");
 			ModuleManager.spoofVersion.Enabled = GUILayout.Toggle(ModuleManager.spoofVersion.Enabled, "Enable Version Spoofing");
 
-			GUILayout.Label($"Spoofed Version: {versions.ElementAt(versionSelection).Key} ({ModuleManager.spoofVersion.SpoofedVersion})");
-			versionSelection = (int)GUILayout.HorizontalSlider(versionSelection, 0, versions.Count - 1);
-			ModuleManager.spoofVersion.SpoofedVersion = versions.ElementAt(versionSelection).Value;
+			GUILayout.Label($"Spoofed Version: {GameAssets.BroadcastVersions[ModuleManager.spoofVersion.SpoofedVersion]} ({ModuleManager.spoofVersion.SpoofedVersion})");
+			ModuleManager.spoofVersion.SpoofedVersion = Controls.HorizontalListSlider(GameAssets.BroadcastVersions, ModuleManager.spoofVersion.SpoofedVersion);
 
 			ModuleManager.spoofVersion.UseModdedProtocol = GUILayout.Toggle(ModuleManager.spoofVersion.UseModdedProtocol, "Use Modded Protocol");
+
+			GUILayout.Label($"Spoof Mod Registration: {GameAssets.ModRegistrationGuids[CurrentModRegistration.ModRegistrationGuidString]}");
+			CurrentModRegistration.ModRegistrationGuidString = Controls.HorizontalListSlider(GameAssets.ModRegistrationGuids, CurrentModRegistration.ModRegistrationGuidString);
 
 			GUILayout.Space(5);
 			GUILayout.Label("Level Spoofer:");
@@ -81,8 +60,8 @@ namespace HydraMenu.ui.sections
 			GUILayout.Space(5);
 			GUILayout.Label("Platform Spoofer:");
 
-			GUILayout.Label($"Spoofed Platform: {ModuleManager.spoofDevice.SpoofedPlatform}");
-			ModuleManager.spoofDevice.SpoofedPlatform = (Platforms)GUILayout.HorizontalSlider((float)ModuleManager.spoofDevice.SpoofedPlatform, 0, 10);
+			GUILayout.Label($"Spoofed Platform: {GameAssets.GetPlatformName(ModuleManager.spoofDevice.SpoofedPlatform)}");
+			ModuleManager.spoofDevice.SpoofedPlatform = (Platforms)Controls.HorizontalListSlider(GameAssets.PlayerPlatforms, (int)ModuleManager.spoofDevice.SpoofedPlatform);
 		}
 
 		private void ClampSelectedLevel(uint newLevel)
