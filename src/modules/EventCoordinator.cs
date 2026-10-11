@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Hazel;
+using HydraMenu.assets;
 using HydraMenu.network;
 using HydraMenu.ui.sections;
 using Il2CppInterop.Runtime;
@@ -143,7 +144,7 @@ namespace HydraMenu.modules
 				if(clientData != null)
 				{
 					PlatformSpecificData platformData = clientData.PlatformData;
-					Hydra.Log.LogMessage($"[PlayerLogger] {clientData.PlayerName} ({__instance.NetId}) joined on {platformData.Platform}. Friendcode {clientData.FriendCode}, PUID {clientData.ProductUserId}");
+					Hydra.Log.LogMessage($"[PlayerLogger] {clientData.PlayerName} ({__instance.NetId}) joined on {GameAssets.GetPlatformName(platformData.Platform)}. Friendcode {clientData.FriendCode}, PUID {clientData.ProductUserId}");
 				}
 				else
 				{

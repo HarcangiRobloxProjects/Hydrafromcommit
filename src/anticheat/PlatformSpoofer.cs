@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using HydraMenu.assets;
 using InnerNet;
 
 namespace HydraMenu.anticheat
@@ -19,7 +20,7 @@ namespace HydraMenu.anticheat
 
 				if(!IsValidPlatform(platformData))
 				{
-					Anticheat.Flag(__instance, $"{clientData.PlayerName} was detected with spoofed platform information. Platform: {platformData.Platform}, Platform name: {platformData.PlatformName}, XUID: {platformData.XboxPlatformId}, PSID: {platformData.PsnPlatformId}.");
+					Anticheat.Flag(__instance, $"{clientData.PlayerName} was detected with spoofed platform information. Platform: {GameAssets.GetPlatformName(platformData.Platform)}, Platform name: {platformData.PlatformName}, XUID: {platformData.XboxPlatformId}, PSID: {platformData.PsnPlatformId}.");
 				}
 			}
 		}
