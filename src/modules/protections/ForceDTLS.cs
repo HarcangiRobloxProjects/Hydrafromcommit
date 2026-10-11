@@ -3,11 +3,11 @@ using InnerNet;
 
 namespace HydraMenu.modules.protections
 {
-	internal class ForceDTLs : Module
+	internal class ForceDTLS : Module
 	{
-		public ForceDTLs() : base("ForceDTLs") { }
+		public ForceDTLS() : base("ForceDTLs") { }
 
-		private static ForceDTLs Instance
+		private static ForceDTLS Instance
 		{
 			get { return ModuleManager.forceDtls; }
 		}
