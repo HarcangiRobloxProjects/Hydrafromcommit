@@ -19,6 +19,9 @@ namespace HydraMenu.ui.sections
 
 			ModuleManager.spoofVersion.UseModdedProtocol = GUILayout.Toggle(ModuleManager.spoofVersion.UseModdedProtocol, "Use Modded Protocol");
 
+			GUILayout.Label($"Spoof Mod Registration: {GameAssets.ModRegistrationGuids[CurrentModRegistration.ModRegistrationGuidString]}");
+			CurrentModRegistration.ModRegistrationGuidString = Controls.HorizontalListSlider(GameAssets.ModRegistrationGuids, CurrentModRegistration.ModRegistrationGuidString);
+
 			GUILayout.Space(5);
 			GUILayout.Label("Level Spoofer:");
 

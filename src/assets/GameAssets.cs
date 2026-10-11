@@ -60,6 +60,20 @@ namespace HydraMenu.assets
 			{ 112, "Starlight" }
 		};
 
+		public static readonly SortedList<string, string> ModRegistrationGuids = new SortedList<string, string>()
+		{
+			// A blank mod GUID is treated as no mod registered
+			{ "", "None" },
+			// https://github.com/Gurge44/EndlessHostRoles/blob/ce23f0d050f617a59507e5bb0fbfff751d4b5134/Modules/AmciRegistration.cs#L23
+			{ "446420cc-ce35-4c2f-8f5d-b14f84354421", "Endless Host Roles"},
+			// https://github.com/TownOfNext/TownOfNext/blob/f1c5185273091136fb5c6a2bdc4104a02d7eb916/src/main.cs#L17
+			{ "789bf6f3-41e4-439f-82d3-ed6d2d2fb710", "Town of Next"},
+			// https://github.com/SuperNewRoles/SuperNewRoles/blob/master/SuperNewRoles/statics.cs#L16
+			{ "9f21dfdc-1224-4322-af7b-63db54cea706", "Super New Roles" }
+			// https://github.com/Limeau/TownofHost-Optimized/blob/025b5c3b9205b7cd54fe97e6b75969071074078a/TOHO/Patches/HostGamePatch.cs#L9
+			// { "995c2cea-a12e-418b-a500-6436eefaaf4d", "Town of Host Optimized" }
+		};
+
 		public static string GetPlatformName(Platforms platformId)
 		{
 			return PlayerPlatforms.GetValueOrDefault((int)platformId, $"Unknown {platformId}");
