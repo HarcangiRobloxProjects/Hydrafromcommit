@@ -19,6 +19,8 @@ namespace HydraMenu.ui.sections
 
 		public override void Render()
 		{
+			bool hasAnticheat = Utilities.IsAnticheatPresent();
+
 			if(PlayerControl.LocalPlayer == null)
 			{
 				GUILayout.Label("You are not currently in a game, these options will not work.");
@@ -32,7 +34,11 @@ namespace HydraMenu.ui.sections
 			ModuleManager.disableSabotages.Enabled = GUILayout.Toggle(ModuleManager.disableSabotages.Enabled, "Disable Sabotages");
 			ModuleManager.disableVents.Enabled = GUILayout.Toggle(ModuleManager.disableVents.Enabled, "Disable Vents");
 			Hydra.routines.glitterBomb.Enabled = GUILayout.Toggle(Hydra.routines.glitterBomb.Enabled, "Glitterbomb");
-			Hydra.routines.ziplineSpammer.Enabled = Controls.GlobalPlayerSpecificToggle("Zipline Spammer", Hydra.routines.ziplineSpammer.targets);
+
+			if(!hasAnticheat)
+			{
+				Hydra.routines.ziplineSpammer.Enabled = Controls.GlobalPlayerSpecificToggle("Zipline Spammer", Hydra.routines.ziplineSpammer.targets);
+			}
 
 			if(GUILayout.Button("Kick All Players"))
 			{

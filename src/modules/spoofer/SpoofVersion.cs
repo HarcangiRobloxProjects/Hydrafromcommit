@@ -6,7 +6,10 @@ namespace HydraMenu.modules.spoofer
 	{
 		public SpoofVersion() : base("SpoofVersion") { }
 
-		public int spoofedVersion = Constants.GetBroadcastVersion();
+		// Do not save this value to the config
+		// If a user saves their config, and later updates their game, the protocol version of the old game version will be used
+		// resulting in being unable to join lobbies
+		internal int SpoofedVersion { get; set; } = Constants.GetBroadcastVersion();
 		public bool UseModdedProtocol { get; set; } = false;
 
 		private static SpoofVersion Instance
@@ -22,7 +25,7 @@ namespace HydraMenu.modules.spoofer
 				// Starting a local lobby or entering Freeplay will bug out if we are using a spoofed version
 				if(!Instance.Enabled || AmongUsClient.Instance == null || AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return true;
 
-				__result = Instance.spoofedVersion;
+				__result = Instance.SpoofedVersion;
 				if(Instance.UseModdedProtocol) __result += 25;
 
 				return false;

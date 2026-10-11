@@ -39,7 +39,7 @@ namespace HydraMenu.modules
 		public static BlockUnauthorizedUpdates blockUnauthorizedUpdates = new BlockUnauthorizedUpdates();
 		public static BypassDisconnectPenalty bypassDisconnectPenalty = new BypassDisconnectPenalty();
 		public static BypassShapeshiftRatelimits bypassShapeshiftRatelimits = new BypassShapeshiftRatelimits();
-		public static ForceDTLs forceDtls = new ForceDTLs();
+		public static ForceDTLS forceDtls = new ForceDTLS();
 
 		// Roles
 		public static MoveInVents moveInVents = new MoveInVents();

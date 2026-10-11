@@ -37,9 +37,9 @@ namespace HydraMenu.ui.sections
 			GUILayout.Label("Version Spoofer:");
 			ModuleManager.spoofVersion.Enabled = GUILayout.Toggle(ModuleManager.spoofVersion.Enabled, "Enable Version Spoofing");
 
-			GUILayout.Label($"Spoofed Version: {versions.ElementAt(versionSelection).Key} ({ModuleManager.spoofVersion.spoofedVersion})");
+			GUILayout.Label($"Spoofed Version: {versions.ElementAt(versionSelection).Key} ({ModuleManager.spoofVersion.SpoofedVersion})");
 			versionSelection = (int)GUILayout.HorizontalSlider(versionSelection, 0, versions.Count - 1);
-			ModuleManager.spoofVersion.spoofedVersion = versions.ElementAt(versionSelection).Value;
+			ModuleManager.spoofVersion.SpoofedVersion = versions.ElementAt(versionSelection).Value;
 
 			ModuleManager.spoofVersion.UseModdedProtocol = GUILayout.Toggle(ModuleManager.spoofVersion.UseModdedProtocol, "Use Modded Protocol");
 
