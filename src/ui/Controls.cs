@@ -1,4 +1,5 @@
 ﻿using AmongUs.GameOptions;
+using HydraMenu.assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,29 +9,6 @@ namespace HydraMenu.ui
 {
 	internal class Controls
 	{
-		// The RoleTypes enum has some weird gaps, everything from Crewmate (0) to Tracker (10) is normal, but then Detective is 12, Viper is 18, and Spirit Guide is 21
-		// https://www.innersloth.com/2026-roadmap-part-1/
-		// The Among Us 2026 roadmap does state that there are currently 15 prototype roles in the works,
-		// could these gaps be attributed to roles that have not been added to the retail version of the game?
-		public static readonly List<RoleTypes> RolesList = new List<RoleTypes>()
-		{
-			RoleTypes.Crewmate,
-			RoleTypes.Scientist,
-			RoleTypes.Engineer,
-			RoleTypes.Noisemaker,
-			RoleTypes.Tracker,
-			RoleTypes.Detective,
-			RoleTypes.Judge,
-			RoleTypes.Impostor,
-			RoleTypes.Shapeshifter,
-			RoleTypes.Phantom,
-			RoleTypes.Viper,
-			RoleTypes.CrewmateGhost,
-			RoleTypes.GuardianAngel,
-			RoleTypes.SpiritGuide,
-			RoleTypes.ImpostorGhost
-		};
-
 		public enum PlayerColors
 		{
 			Red,
@@ -54,13 +32,27 @@ namespace HydraMenu.ui
 			Fortegreen
 		}
 
+		public static T HorizontalListSlider<T>(List<T> list, T currentValue)
+		{
+			int index = list.IndexOf(currentValue);
+
+			int newValue = (int)GUILayout.HorizontalSlider(index, 0, list.Count - 1);
+
+			return list[newValue];
+		}
+
+		public static TKey HorizontalListSlider<TKey, TValue>(SortedList<TKey, TValue> list, TKey currentValue)
+		{
+			int index = list.IndexOfKey(currentValue);
+
+			int newIndex = (int)GUILayout.HorizontalSlider(index, 0, list.Count - 1);
+
+			return list.Keys[newIndex];
+		}
+
 		public static RoleTypes HorizontalRoleSlider(RoleTypes currentRole)
 		{
-			int currentValue = RolesList.IndexOf(currentRole);
-
-			byte newValue = (byte)GUILayout.HorizontalSlider(currentValue, 0, RolesList.Count - 1);
-
-			return RolesList[newValue];
+			return HorizontalListSlider(GameAssets.RolesList, currentRole);
 		}
 
 		public static PlayerColors HorizontalColorSlider(PlayerColors currentColor)

@@ -2,9 +2,11 @@
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using HydraMenu.assets;
 using HydraMenu.modules;
 using HydraMenu.routines;
 using HydraMenu.ui;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HydraMenu;
@@ -77,6 +79,17 @@ internal class Hydra : BasePlugin
 	{
 		public static void Postfix()
 		{
+			int broadcastVersion = Constants.GetBroadcastVersion();
+
+			if(!GameAssets.BroadcastVersions.ContainsKey(broadcastVersion))
+			{
+				Log.LogWarning($"BroadcastVersion list is missing broadcast version {broadcastVersion}");
+
+				GameAssets.BroadcastVersions.Add(broadcastVersion, ReferenceDataManager.Instance.Refdata.userFacingVersion);
+			}
+
+			GUI.horiz
+
 			Log.LogInfo("Adding mod stamp");
 			ModManager.Instance.ShowModStamp();
 		}
