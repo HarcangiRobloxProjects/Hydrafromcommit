@@ -43,5 +43,31 @@ namespace HydraMenu.assets
 			{ 50663650, "19.0 (build 7488)" }, // iOS
 			{ 50663600, "19.0 (build 7489)" } // PC
 		};
+
+		public static readonly SortedList<int, string> PlayerPlatforms = new SortedList<int, string>()
+		{
+			{ 0, "Unknown" },
+			{ 1, "Epic Games" },
+			{ 2, "Steam" },
+			{ 3, "MacOS" },
+			{ 4, "Microsoft Store" },
+			{ 5, "Itch.io" },
+			{ 6, "iOS" },
+			{ 7, "Android" },
+			{ 8, "Nintendo Switch" },
+			{ 9, "Xbox" },
+			{ 10, "PlayStation" },
+			{ 112, "Starlight" }
+		};
+
+		public static string GetPlatformName(Platforms platformId)
+		{
+			return PlayerPlatforms.GetValueOrDefault((int)platformId, $"Unknown {platformId}");
+		}
+
+		public static string GetPlatformName(int platformId)
+		{
+			return PlayerPlatforms.GetValueOrDefault(platformId, $"Unknown {platformId}");
+		}
 	}
 }

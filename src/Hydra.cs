@@ -88,8 +88,6 @@ internal class Hydra : BasePlugin
 				GameAssets.BroadcastVersions.Add(broadcastVersion, ReferenceDataManager.Instance.Refdata.userFacingVersion);
 			}
 
-			GUI.horiz
-
 			Log.LogInfo("Adding mod stamp");
 			ModManager.Instance.ShowModStamp();
 		}
