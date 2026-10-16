@@ -12,6 +12,10 @@ namespace HydraMenu.modules.spoofer
 		internal int SpoofedVersion { get; set; } = Constants.GetBroadcastVersion();
 		public bool UseModdedProtocol { get; set; } = false;
 
+		// https://github.com/Innersloth-LLC/AmongUsModdingInformation#host-only-mod-registration-25-modded-flag
+		// Adding the constant value 25 to the current protocol version will result in the lobby being in host-authoritative mode
+		private readonly int MODDED_PROTOCOL_CONSTANT = 25;
+
 		private static SpoofVersion Instance
 		{
 			get { return ModuleManager.spoofVersion; }
@@ -26,7 +30,7 @@ namespace HydraMenu.modules.spoofer
 				if(!Instance.Enabled || AmongUsClient.Instance == null || AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame) return true;
 
 				__result = Instance.SpoofedVersion;
-				if(Instance.UseModdedProtocol) __result += 25;
+				if(Instance.UseModdedProtocol) __result += Instance.MODDED_PROTOCOL_CONSTANT;
 
 				return false;
 			}

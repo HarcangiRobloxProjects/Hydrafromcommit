@@ -18,6 +18,7 @@ namespace HydraMenu.modules
 		public static event Action OnGameLoad;
 		public static event Action OnDisconnect;
 
+		public static event Action<MeetingHud.VoterState[], NetworkedPlayerInfo, bool, bool> OnVotingComplete;
 		public static event Action OnMeetingEnd;
 		public static event Action<Minigame> OnOpenMinigame;
 		public static event Action<Ladder> OnUseLadder;
@@ -82,6 +83,15 @@ namespace HydraMenu.modules
 				HostSection.shipList.Clear();
 
 				PublishEvent(OnDisconnect);
+			}
+		}
+
+		[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
+		class VotingComplete
+		{
+			static void Prefix(MeetingHud.VoterState[] states, NetworkedPlayerInfo exiled, bool tie, bool wasOverruled)
+			{
+				PublishEvent(OnVotingComplete, states, exiled, tie, wasOverruled);
 			}
 		}
 
@@ -519,6 +529,12 @@ namespace HydraMenu.modules
 		{
 			if(evt == null) return;
 			evt(arg1, arg2, arg3);
+		}
+
+		private static void PublishEvent<T1, T2, T3, T4>(Action<T1, T2, T3, T4> evt, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+		{
+			if(evt == null) return;
+			evt(arg1, arg2, arg3, arg4);
 		}
 	}
 }

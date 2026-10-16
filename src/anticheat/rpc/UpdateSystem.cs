@@ -10,7 +10,6 @@ namespace HydraMenu.anticheat.rpc
 {
 	internal class UpdateSystem : RpcCheck
 	{
-		// TODO: Maybe change the variable name to something shorter lol?
 		private static readonly SystemTypes[] SystemsThatCanBeUpdatedWhenDead = {
 			SystemTypes.MedBay,
 			SystemTypes.Sabotage,
