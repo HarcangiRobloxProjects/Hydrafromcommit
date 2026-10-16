@@ -8,6 +8,7 @@
 		{
 			PlayerControl.LocalPlayer.CmdReportDeadBody(null);
 			Hydra.notifications.Send("Lobby Crasher", "The lobby has been crashed.");
+			Enabled = false;
 		}
 
 		protected override void OnEnable()
