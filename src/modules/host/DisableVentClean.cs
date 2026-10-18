@@ -26,7 +26,7 @@ namespace HydraMenu.modules.host
 		{
 			if(ShipStatus.Instance == null || !AmongUsClient.Instance.AmHost) return;
 
-			ISystemType systemType = ShipStatus.Instance.Systems[SystemTypes.Ventilation];
+			ShipStatus.Instance.Systems.TryGetValue(SystemTypes.Ventilation, out ISystemType systemType);
 			if(systemType == null) return;
 
 			VentilationSystem ventilationSystem = systemType.Cast<VentilationSystem>();

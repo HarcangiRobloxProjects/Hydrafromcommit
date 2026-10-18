@@ -37,6 +37,7 @@ namespace HydraMenu.ui.sections
 			ModuleManager.flipSkeld.Enabled = GUILayout.Toggle(ModuleManager.flipSkeld.Enabled, "Use Flipped Skeld Map");
 
 			ModuleManager.disableGameEnd.Enabled = GUILayout.Toggle(ModuleManager.disableGameEnd.Enabled, "Disable Game End");
+			ModuleManager.disableSporeTriggers.Enabled = GUILayout.Toggle(ModuleManager.disableSporeTriggers.Enabled, "Disable Spore Triggers");
 			ModuleManager.disableVentClean.Enabled = GUILayout.Toggle(ModuleManager.disableVentClean.Enabled, "Disable Vent Clean");
 
 			ModuleManager.fakeShapeshiftBubble.Enabled = GUILayout.Toggle(ModuleManager.fakeShapeshiftBubble.Enabled, "Fake Shapeshift Bubble");

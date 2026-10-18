@@ -5,7 +5,7 @@ namespace HydraMenu.modules.protections
 {
 	internal class ForceDTLS : Module
 	{
-		public ForceDTLS() : base("ForceDTLs") { }
+		public ForceDTLS() : base("ForceDTLS") { }
 
 		private static ForceDTLS Instance
 		{

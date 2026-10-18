@@ -21,6 +21,7 @@ namespace HydraMenu.modules
 		public static BlockLowLevels blockLowLevels = new BlockLowLevels();
 		public static DisableGameEnd disableGameEnd = new DisableGameEnd();
 		public static DisableMeetings disableMeetings = new DisableMeetings();
+		public static DisableSporeTriggers disableSporeTriggers = new DisableSporeTriggers();
 		public static DisableVentClean disableVentClean = new DisableVentClean();
 		public static FakeShapeshiftBubble fakeShapeshiftBubble = new FakeShapeshiftBubble();
 		public static FlipSkeld flipSkeld = new FlipSkeld();
@@ -95,6 +96,7 @@ namespace HydraMenu.modules
 				blockLowLevels,
 				disableGameEnd,
 				disableMeetings,
+				disableSporeTriggers,
 				disableVentClean,
 				fakeShapeshiftBubble,
 				flipSkeld,
