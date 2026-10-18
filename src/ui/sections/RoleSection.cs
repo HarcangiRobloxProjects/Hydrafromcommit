@@ -27,8 +27,9 @@ namespace HydraMenu.ui.sections
 			ModuleManager.noKillChecks.Enabled = GUILayout.Toggle(ModuleManager.noKillChecks.Enabled, "Enabled");
 			ModuleManager.noKillChecks.KillOtherImpostors = GUILayout.Toggle(ModuleManager.noKillChecks.KillOtherImpostors, "Kill Other Impostors");
 			ModuleManager.noKillChecks.KillAsPhantom = GUILayout.Toggle(ModuleManager.noKillChecks.KillAsPhantom, "Kill While Vanished");
-			ModuleManager.noKillChecks.NoKillCooldown = GUILayout.Toggle(ModuleManager.noKillChecks.NoKillCooldown, "No Kill Cooldown (Host-only)");
+			ModuleManager.noKillChecks.KillVentedPlayers = GUILayout.Toggle(ModuleManager.noKillChecks.KillVentedPlayers, "Kill Players In Vents (Host-only)");
 			ModuleManager.noKillChecks.KillGhosts = GUILayout.Toggle(ModuleManager.noKillChecks.KillGhosts, "Kill Ghosts (Host-only)");
+			ModuleManager.noKillChecks.NoKillCooldown = GUILayout.Toggle(ModuleManager.noKillChecks.NoKillCooldown, "No Kill Cooldown (Host-only)");
 
 			GUILayout.Label($"Change role to: {selectedRole}");
 			GUILayout.BeginHorizontal();
