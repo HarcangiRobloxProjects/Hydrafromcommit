@@ -33,7 +33,7 @@ namespace HydraMenu
 			// If we attempt to modify our game options then this will have the unintended behavior of affecting our lobby settings
 			if(ModuleManager.bypassShapeshiftRatelimits.Enabled) options.SetFloat(FloatOptionNames.ShapeshifterCooldown, 0.0f);
 
-			MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+			MessageWriter writer = MessageWriter.Get(SendOption.None);
 			writer.StartMessage((byte)FindLogicOptionsIndex());
 			writer.WriteBytesAndSize(GameManager.Instance.LogicOptions.gameOptionsFactory.ToBytes(options, AprilFoolsMode.IsAprilFoolsModeToggledOn));
 			writer.EndMessage();

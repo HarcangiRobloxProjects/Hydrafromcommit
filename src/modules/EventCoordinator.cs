@@ -172,7 +172,7 @@ namespace HydraMenu.modules
 		{
 			static void Prefix(ClientData data, DisconnectReasons reason)
 			{
-				if(data.Character == null) return;
+				if(data.Character == null || data.Character.Data == null) return;
 
 				Hydra.Log.LogInfo($"[Disconnect Logger] {data.Character.Data.PlayerName} was disconnected with reason {reason}");
 

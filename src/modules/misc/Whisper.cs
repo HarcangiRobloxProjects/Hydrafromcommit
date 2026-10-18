@@ -70,6 +70,7 @@ namespace HydraMenu.modules.misc
 			if(client.Character != target) return;
 
 			Hydra.notifications.Send("Whisper", "Whisper was disabled as the player you were whispering to left the game.");
+			Enabled = false;
 		}
 
 		private void OnDisconnect()

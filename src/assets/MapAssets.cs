@@ -76,7 +76,7 @@ namespace HydraMenu.assets
 			{ 3, "Engine Room" },
 			{ 4, "Kitchen" },
 			{ 5, "Bedroom 1" },
-			{ 6, "Janitor Roomw" },
+			{ 6, "Janitor Room" },
 			{ 7, "Gap Room Right" },
 			{ 8, "Gap Room Left" },
 			{ 9, "Showers" },
