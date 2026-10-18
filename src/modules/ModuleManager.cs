@@ -23,6 +23,7 @@ namespace HydraMenu.modules
 		public static DisableMeetings disableMeetings = new DisableMeetings();
 		public static DisableSporeTriggers disableSporeTriggers = new DisableSporeTriggers();
 		public static DisableVentClean disableVentClean = new DisableVentClean();
+		public static DisableZipline disableZipline = new DisableZipline();
 		public static FakeShapeshiftBubble fakeShapeshiftBubble = new FakeShapeshiftBubble();
 		public static FlipSkeld flipSkeld = new FlipSkeld();
 		public static TempBanAll tempBanAll = new TempBanAll();
@@ -98,6 +99,7 @@ namespace HydraMenu.modules
 				disableMeetings,
 				disableSporeTriggers,
 				disableVentClean,
+				disableZipline,
 				fakeShapeshiftBubble,
 				flipSkeld,
 				tempBanAll,
